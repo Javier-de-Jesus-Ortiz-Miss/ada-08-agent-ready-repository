@@ -1,0 +1,15 @@
+Implement the change described in TASK_UNDER_TEST.md.
+
+Before making any changes:
+- inspect the repository,
+- identify the relevant project context,
+- determine how the project is built, tested, and validated,
+- respect the existing architecture and repository conventions.
+
+When finished:
+- run the appropriate validation,
+- report the files modified,
+- report the commands executed,
+- provide evidence that the requested change works.
+
+Do not ask for additional repository context unless it is necessary to proceed safely.

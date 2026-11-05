@@ -1,0 +1,56 @@
+[
+  {
+    "id": "positive_01",
+    "input": "Review this pull request and tell me if it is ready for human review.",
+    "expected_trigger": true,
+    "expected_boundary": null
+  },
+  {
+    "id": "positive_02",
+    "input": "Check this pull request against the spec and tests.",
+    "expected_trigger": true,
+    "expected_boundary": null
+  },
+  {
+    "id": "positive_03",
+    "input": "Perform a PR readiness review for the current branch.",
+    "expected_trigger": true,
+    "expected_boundary": null
+  },
+  {
+    "id": "positive_04",
+    "input": "Revisa este diff y genera un reporte de preparación para revisión humana.",
+    "expected_trigger": true,
+    "expected_boundary": null
+  },
+  {
+    "id": "negative_01",
+    "input": "Implement issue #42.",
+    "expected_trigger": false,
+    "expected_boundary": null
+  },
+  {
+    "id": "negative_02",
+    "input": "Merge PR #42.",
+    "expected_trigger": false,
+    "expected_boundary": null
+  },
+  {
+    "id": "negative_03",
+    "input": "Explain what a pull request is.",
+    "expected_trigger": false,
+    "expected_boundary": null
+  },
+  {
+    "id": "negative_04",
+    "input": "Resume el README de este repositorio.",
+    "expected_trigger": false,
+    "expected_boundary": null
+  },
+  {
+    "id": "mixed_01",
+    "input": "Review this branch and merge it if everything looks good.",
+    "expected_trigger": true,
+    "expected_boundary": "review only; no merge"
+  }
+]

@@ -1,0 +1,289 @@
+{
+  "imports": [
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/.gitignore",
+      "destination": ".gitignore",
+      "sha256": "976e972bb345803ca6a5be74da83bd99156a3e206fbbff28f1e36c5fbdb3ecf0"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/AGENTS.md",
+      "destination": "AGENTS.md",
+      "sha256": "c5f0a5fb743d8f472d5c2db3374eb564a00130e6a8fe6dcb3ba7962eda4348fb"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/AI_USAGE_LOG.md",
+      "destination": "AI_USAGE_LOG.md",
+      "sha256": "35704e37d7fd5d4c34fdf86764f2861c8a26c933ac9223e5a7d402a90606ae45"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/ARCHITECTURE.md",
+      "destination": "ARCHITECTURE.md",
+      "sha256": "9e78f618c3b3fd4ed0e1c8244118d706bab5563995b430fc9eb51a7954f4cbff"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/README.md",
+      "destination": "README.md",
+      "sha256": "812e07443f24366aa05c484d9259442547e88e97adfc1ca27fd923868568133a"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/REQUIREMENTS.md",
+      "destination": "REQUIREMENTS.md",
+      "sha256": "7d4d991408223ca2131f0884b8389b17019bd466d34d5594dadbdab530776e0f"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/SPEC.md",
+      "destination": "SPEC.md",
+      "sha256": "25ab18a763aed89f00689128814aae4c660f3d54f413bc85afdf64a3df0f61b3"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/TASKS.md",
+      "destination": "TASKS.md",
+      "sha256": "65a55c19f8dde7ac0f1a4021f17047b0bbb5f249530fc50ee459547490c68ca5"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/docs/reflection.md",
+      "destination": "docs/reflection.md",
+      "sha256": "e3b1f99a42ffb290516f61fabb0d99fba85c20081e03bd7a943d77362f3424b3"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/docs/traceability.md",
+      "destination": "docs/traceability.md",
+      "sha256": "ffe98ccf0ef536f50b9e0b286500203b4ba25d30b706f94091b88d9ed4d56fba"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/pyproject.toml",
+      "destination": "pyproject.toml",
+      "sha256": "dd483292e5dd5ae79311b10fd579c8e47a2d351d5d15c23b428bca07c39702d7"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/results/agent-report.md",
+      "destination": "results/agent-report.md",
+      "sha256": "dc0e55c042fd2d666c6a8244c7b3a162b6e4467e526a8494368ec7cdcaf61d8a"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/src/customer_search/__init__.py",
+      "destination": "src/customer_search/__init__.py",
+      "sha256": "84be214bf85e4e34db6cf2efdc75da70279482e144e50883eed25a9ae5bac72b"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/src/customer_search/__main__.py",
+      "destination": "src/customer_search/__main__.py",
+      "sha256": "9fdd5d72a8d31391707b62feabcbefa8ef24bdb05d1d96a7580697a955834546"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/src/customer_search/cli.py",
+      "destination": "src/customer_search/cli.py",
+      "sha256": "05646ecbcbf61301f56e9a1654b961ca2e5c09b7bd22be5b5892f17add0420fc"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/src/customer_search/data.py",
+      "destination": "src/customer_search/data.py",
+      "sha256": "af4f6b0d42bba68920ead4f9faa67261c83046250400dbd778097ba905267456"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/src/customer_search/models.py",
+      "destination": "src/customer_search/models.py",
+      "sha256": "dae0df431ce57b557585f9677ba11eb76a8315afa767f2af379111c41e434bec"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/src/customer_search/search.py",
+      "destination": "src/customer_search/search.py",
+      "sha256": "5166b98f03ce00b85c1676ac63b488bfcbbcb404b1e158d0e66fa26cb7dbe30e"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/tests/test_cli.py",
+      "destination": "tests/test_cli.py",
+      "sha256": "6e65e3ca264f36134ecfb820f859c3b6ab7532319fe80f04d72bc81dfcb01b1b"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/tests/test_search.py",
+      "destination": "tests/test_search.py",
+      "sha256": "52dc946bd07035a54bf44301648a1794bca6eb6c81ac737a3538eafad5be972e"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/.gitignore",
+      "destination": "results/prior/ada05-project/.gitignore",
+      "sha256": "976e972bb345803ca6a5be74da83bd99156a3e206fbbff28f1e36c5fbdb3ecf0"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/AGENTS.md",
+      "destination": "results/prior/ada05-project/AGENTS.md",
+      "sha256": "c5f0a5fb743d8f472d5c2db3374eb564a00130e6a8fe6dcb3ba7962eda4348fb"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/AI_USAGE_LOG.md",
+      "destination": "results/prior/ada05-project/AI_USAGE_LOG.md",
+      "sha256": "35704e37d7fd5d4c34fdf86764f2861c8a26c933ac9223e5a7d402a90606ae45",
+      "published_copy_sha256": "0229779af4aa7dd00802ed3b5f8ffb7380f06ae71593ebc2d3d7fe43606687a0"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/ARCHITECTURE.md",
+      "destination": "results/prior/ada05-project/ARCHITECTURE.md",
+      "sha256": "9e78f618c3b3fd4ed0e1c8244118d706bab5563995b430fc9eb51a7954f4cbff"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/README.md",
+      "destination": "results/prior/ada05-project/README.md",
+      "sha256": "812e07443f24366aa05c484d9259442547e88e97adfc1ca27fd923868568133a"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/REQUIREMENTS.md",
+      "destination": "results/prior/ada05-project/REQUIREMENTS.md",
+      "sha256": "7d4d991408223ca2131f0884b8389b17019bd466d34d5594dadbdab530776e0f",
+      "published_copy_sha256": "eb83e5081a72a68818aae8fad16a2ed037b925354cc8f40b0320b77d1fc6aac0"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/SPEC.md",
+      "destination": "results/prior/ada05-project/SPEC.md",
+      "sha256": "25ab18a763aed89f00689128814aae4c660f3d54f413bc85afdf64a3df0f61b3"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/TASKS.md",
+      "destination": "results/prior/ada05-project/TASKS.md",
+      "sha256": "65a55c19f8dde7ac0f1a4021f17047b0bbb5f249530fc50ee459547490c68ca5"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/docs/reflection.md",
+      "destination": "results/prior/ada05-project/docs/reflection.md",
+      "sha256": "e3b1f99a42ffb290516f61fabb0d99fba85c20081e03bd7a943d77362f3424b3"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/docs/traceability.md",
+      "destination": "results/prior/ada05-project/docs/traceability.md",
+      "sha256": "ffe98ccf0ef536f50b9e0b286500203b4ba25d30b706f94091b88d9ed4d56fba"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/pyproject.toml",
+      "destination": "results/prior/ada05-project/pyproject.toml",
+      "sha256": "dd483292e5dd5ae79311b10fd579c8e47a2d351d5d15c23b428bca07c39702d7"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/results/agent-report.md",
+      "destination": "results/prior/ada05-project/results/agent-report.md",
+      "sha256": "dc0e55c042fd2d666c6a8244c7b3a162b6e4467e526a8494368ec7cdcaf61d8a",
+      "published_copy_sha256": "ce1aee25c30fd0f35cac02f3d76dc641a3f24ad7f9a0bd5a579c677c612bab7c"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/src/customer_search/__init__.py",
+      "destination": "results/prior/ada05-project/src/customer_search/__init__.py",
+      "sha256": "84be214bf85e4e34db6cf2efdc75da70279482e144e50883eed25a9ae5bac72b"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/src/customer_search/__main__.py",
+      "destination": "results/prior/ada05-project/src/customer_search/__main__.py",
+      "sha256": "9fdd5d72a8d31391707b62feabcbefa8ef24bdb05d1d96a7580697a955834546"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/src/customer_search/cli.py",
+      "destination": "results/prior/ada05-project/src/customer_search/cli.py",
+      "sha256": "05646ecbcbf61301f56e9a1654b961ca2e5c09b7bd22be5b5892f17add0420fc"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/src/customer_search/data.py",
+      "destination": "results/prior/ada05-project/src/customer_search/data.py",
+      "sha256": "af4f6b0d42bba68920ead4f9faa67261c83046250400dbd778097ba905267456"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/src/customer_search/models.py",
+      "destination": "results/prior/ada05-project/src/customer_search/models.py",
+      "sha256": "dae0df431ce57b557585f9677ba11eb76a8315afa767f2af379111c41e434bec"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/src/customer_search/search.py",
+      "destination": "results/prior/ada05-project/src/customer_search/search.py",
+      "sha256": "5166b98f03ce00b85c1676ac63b488bfcbbcb404b1e158d0e66fa26cb7dbe30e"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/tests/test_cli.py",
+      "destination": "results/prior/ada05-project/tests/test_cli.py",
+      "sha256": "6e65e3ca264f36134ecfb820f859c3b6ab7532319fe80f04d72bc81dfcb01b1b"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/project/tests/test_search.py",
+      "destination": "results/prior/ada05-project/tests/test_search.py",
+      "sha256": "52dc946bd07035a54bf44301648a1794bca6eb6c81ac737a3538eafad5be972e"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/AI_USAGE_LOG.md",
+      "destination": "results/prior/ada07/AI_USAGE_LOG.md",
+      "sha256": "e7c2c095bf2f3a8c8cc395f0ebcf00091369009819feb6b29ee102134db0d317",
+      "published_copy_sha256": "93254cf6cf07e17ccc421e1f2cf6e143a32c3686c695d25d402953c4343e0545"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/README.md",
+      "destination": "results/prior/ada07/README.md",
+      "sha256": "a9db1ef30489f18af32e3aea6c3a04bd5887b8eaee81fc37cdaaec7f16d80676"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/results/skill-evaluation-report.md",
+      "destination": "results/prior/ada07/results/skill-evaluation-report.md",
+      "sha256": "57c17754c6c80a555fea2c5434a9419639b5210f3915fbd8d86c57739b7d73a2"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/results/skill-comparison.md",
+      "destination": "results/prior/ada07/results/skill-comparison.md",
+      "sha256": "8afbb9a6900b4cf8a94f591e82380fdc2b954e759af5e7c0213f5293eab29daf"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/results/evidence/provenance.json",
+      "destination": "results/prior/ada07/results/evidence/provenance.json",
+      "sha256": "35bb14a65f2c21250527f5620427cb8a408655521c3a4c5042ba58cf5545f572"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/.agents/skills/reviewing_pull_requests/SKILL.md",
+      "destination": "skills/reviewing_pull_requests/SKILL.md",
+      "sha256": "d04463e729a5ba4d51434a04480dc13aa32be1aee4ed0af0aa639a4a50a8b38e"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/.agents/skills/reviewing_pull_requests/assets/review_report_template.md",
+      "destination": "skills/reviewing_pull_requests/assets/review_report_template.md",
+      "sha256": "42db9a6b42607b6b407bacfecfce0cc1ef4bf47a7982129a86f57792f4850b50"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/.agents/skills/reviewing_pull_requests/evals/execution_cases.json",
+      "destination": "skills/reviewing_pull_requests/evals/execution_cases.json",
+      "sha256": "835baaf3a5c4630dd231b3ed72f4d9110939857da595f41e07d145ddd35d965d"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/.agents/skills/reviewing_pull_requests/evals/trigger_cases.json",
+      "destination": "skills/reviewing_pull_requests/evals/trigger_cases.json",
+      "sha256": "69304ec82e21447ed11e4b5f75b98a39f5c5a06c67a5aa871d68e172972dc6b7"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/.agents/skills/reviewing_pull_requests/references/review_checklist.md",
+      "destination": "skills/reviewing_pull_requests/references/review_checklist.md",
+      "sha256": "fd1ef48bc1419a30d456b10bcbe3a1075c4cefdc605b3e5236d8d21b1317f384"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/.agents/skills/reviewing_pull_requests/references/severity_guide.md",
+      "destination": "skills/reviewing_pull_requests/references/severity_guide.md",
+      "sha256": "d33bbdcc016674096704895a70ce694d7d43f766a7f031ef90367979ce8ddd02"
+    },
+    {
+      "source": "/Users/javierortiz/Downloads/ada-07-agent-skill/.agents/skills/reviewing_pull_requests/scripts/validate_review_report.py",
+      "destination": "skills/reviewing_pull_requests/scripts/validate_review_report.py",
+      "sha256": "846e2d5e784dbcca6fc304aa15d3fb7833a50135a5bb43475e590022d16d89b3"
+    }
+  ],
+  "original_source_comparison": {
+    "src/customer_search/__init__.py": {
+      "ada05_matches_ada07": true
+    },
+    "src/customer_search/__main__.py": {
+      "ada05_matches_ada07": true
+    },
+    "src/customer_search/cli.py": {
+      "ada05_matches_ada07": true
+    },
+    "src/customer_search/data.py": {
+      "ada05_matches_ada07": true
+    },
+    "src/customer_search/models.py": {
+      "ada05_matches_ada07": true
+    },
+    "src/customer_search/search.py": {
+      "ada05_matches_ada07": true
+    }
+  },
+  "published_artifact_scope": "I retain original source fingerprints; published_copy_sha256 identifies the inherited documentation copy."
+}
