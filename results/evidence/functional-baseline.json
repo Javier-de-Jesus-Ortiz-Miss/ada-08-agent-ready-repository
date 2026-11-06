@@ -1,0 +1,10 @@
+{
+  "src/customer_search/__init__.py": "84be214bf85e4e34db6cf2efdc75da70279482e144e50883eed25a9ae5bac72b",
+  "src/customer_search/__main__.py": "9fdd5d72a8d31391707b62feabcbefa8ef24bdb05d1d96a7580697a955834546",
+  "src/customer_search/cli.py": "05646ecbcbf61301f56e9a1654b961ca2e5c09b7bd22be5b5892f17add0420fc",
+  "src/customer_search/data.py": "af4f6b0d42bba68920ead4f9faa67261c83046250400dbd778097ba905267456",
+  "src/customer_search/models.py": "dae0df431ce57b557585f9677ba11eb76a8315afa767f2af379111c41e434bec",
+  "src/customer_search/search.py": "5166b98f03ce00b85c1676ac63b488bfcbbcb404b1e158d0e66fa26cb7dbe30e",
+  "tests/test_cli.py": "6e65e3ca264f36134ecfb820f859c3b6ab7532319fe80f04d72bc81dfcb01b1b",
+  "tests/test_search.py": "52dc946bd07035a54bf44301648a1794bca6eb6c81ac737a3538eafad5be972e"
+}

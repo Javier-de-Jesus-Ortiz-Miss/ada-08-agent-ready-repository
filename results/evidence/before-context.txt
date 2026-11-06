@@ -1,0 +1,510 @@
+FILE: AGENTS.md 
+ # Agent Instructions
+
+## Project Rules
+
+- Read `REQUIREMENTS.md` and `SPEC.md` before implementing.
+- Read `ARCHITECTURE.md` before architectural changes and follow `TASKS.md`.
+- Prefer small, focused changes. Do not invent business requirements.
+- Do not modify `REQUIREMENTS.md` or `SPEC.md` to make tests pass.
+- Do not delete or weaken tests. Justify any new dependency.
+- Work on one task at a time and report files, verification and unresolved issues.
+
+## Validation
+
+- Run `pytest` before and after changes when tests exist.
+- Add tests for new behavior. Stop and ask for clarification if requirements conflict.
+- Report changed files and test results.
+
+## Definition of Done
+
+- Relevant tests pass and acceptance criteria are covered.
+- No unrelated files are changed.
+- Documentation reflects final behavior.
+
+FILE: README.md 
+ # Customer Search — ADA-05
+
+CLI local para buscar clientes ficticios por nombre o correo electrónico. Acepta fragmentos, ignora mayúsculas y conserva el orden de los datos de entrada.
+
+## Requisitos
+
+- Python 3.11 o superior.
+- `pytest` para ejecutar las pruebas.
+- No se requieren credenciales, red, base de datos ni API de pago durante la ejecución.
+
+## Instalación
+
+Desde la raíz del proyecto:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[test]'
+```
+
+La instalación incluye `pytest` como dependencia opcional de pruebas; la aplicación no tiene dependencias externas de ejecución.
+
+## Ejecución
+
+Con el entorno activado:
+
+```bash
+customer-search ana
+customer-search example.com
+```
+
+También puede ejecutarse sin instalar el paquete:
+
+```bash
+PYTHONPATH=src python3 -m customer_search ana
+```
+
+El término se pasa como un único argumento. Si contiene espacios, usa comillas: `customer-search "ana lópez"`. Una búsqueda sin coincidencias muestra `No se encontraron clientes.`; un término vacío produce error y código de salida 2.
+
+Los cuatro clientes del archivo `src/customer_search/data.py` son ficticios. No hay escritura de datos.
+
+## Pruebas
+
+```bash
+pytest -v
+```
+
+## Documentación del ADA
+
+- `REQUIREMENTS.md`: requisitos con IDs estables.
+- `SPEC.md`: comportamiento y criterios de aceptación.
+- `ARCHITECTURE.md`: componentes y decisiones técnicas.
+- `TASKS.md`: secuencia de trabajo.
+- `AGENTS.md`: instrucciones para el agente.
+- `docs/traceability.md`: requisito → criterio → tarea → código → prueba.
+- `AI_USAGE_LOG.md`: decisiones e interacciones relevantes de IA.
+- `results/agent-report.md`: secuencia de trabajo, verificaciones y revisión personal.
+- `docs/reflection.md`: reflexión sobre las decisiones y el proceso del proyecto.
+
+FILE: REQUIREMENTS.md 
+ # Requirements — Customer Search
+
+## Historia de usuario
+
+Como usuario, quiero buscar clientes por nombre o correo electrónico para encontrar rápidamente el registro que necesito.
+
+## Requisitos funcionales
+
+- **FR-01 — Búsqueda unificada:** El usuario puede introducir un único término de búsqueda para consultar clientes por nombre o correo electrónico.
+- **FR-02 — Coincidencia parcial:** Un cliente coincide cuando el término aparece como parte de su nombre o de su correo electrónico; no se exige una coincidencia exacta.
+- **FR-03 — Independencia de mayúsculas:** La búsqueda produce los mismos resultados aunque cambien las mayúsculas o minúsculas del término o de los datos del cliente.
+- **FR-04 — Resultados identificables:** Cada resultado muestra, como mínimo, el identificador, el nombre y el correo electrónico del cliente.
+- **FR-05 — Sin coincidencias:** Cuando ningún cliente coincide, la aplicación informa que no se encontraron resultados, sin presentar registros ajenos a la búsqueda.
+- **FR-06 — Validación del término:** La aplicación rechaza un término vacío o compuesto solo por espacios e informa al usuario cómo corregirlo.
+
+## Requisitos no funcionales
+
+- **NFR-01 — Pruebas automatizadas:** El comportamiento de búsqueda y validación debe poder verificarse con pruebas ejecutables mediante `pytest`.
+- **NFR-02 — Ejecución local:** La función debe ejecutarse localmente sin servicios externos ni API de pago.
+- **NFR-03 — Entorno reproducible:** El proyecto debe documentar cómo instalar sus dependencias y ejecutar la aplicación y sus pruebas con Python 3.11 o superior.
+
+## Preguntas abiertas
+
+- **Q-01 — Datos de ejemplo (resuelta):** Se usará un conjunto pequeño de clientes ficticios incluido en el proyecto.
+- **Q-02 — Orden de resultados (resuelta):** Se conservará el orden de los datos de entrada.
+
+## Restricciones y supuestos
+
+- **C-01:** El proyecto se construye desde cero y usa herramientas gratuitas.
+- **C-02:** La implementación por agente debe realizarse con Antigravity CLI (`agy`), con revisión y validación del código por el estudiante.
+- **C-03:** Se mantiene un registro de uso de IA durante las etapas que influyan en el producto.
+- **A-01:** La primera versión será una CLI de Python con datos en memoria; no requiere base de datos ni API HTTP.
+- **A-02:** Los registros de clientes ya existen al ejecutar la búsqueda. Crear, editar o eliminar clientes queda fuera de esta feature.
+
+## Decisiones de alcance
+
+El proyecto usa una CLI y clientes ficticios en memoria porque el objetivo es demostrar la búsqueda y sus pruebas. Se conserva el orden de entrada para evitar añadir una regla de clasificación que no necesita esta versión. Estas decisiones corresponden a Q-01, Q-02 y A-01.
+
+## Revisión del documento
+
+Yo conservé la trazabilidad de los requisitos y las decisiones de alcance en la documentación técnica.
+
+FILE: SPEC.md 
+ # Customer Search Feature
+
+## Goal
+
+Permitir localizar registros existentes de clientes mediante una CLI local con un solo término.
+
+## Requirements Covered
+
+- FR-01
+- FR-02
+- FR-03
+- FR-04
+- FR-05
+- FR-06
+- NFR-01
+- NFR-02
+- NFR-03
+
+## Scope
+
+Una ejecución recibe un término de búsqueda, consulta una lista fija de clientes ficticios en memoria y presenta las coincidencias.
+
+## Out of Scope
+
+Alta, edición o eliminación de clientes; persistencia; API HTTP; paginación; clasificación por relevancia; búsqueda por otros campos.
+
+## Domain Model
+
+`Customer` tiene `id` (texto no vacío), `name` (texto) y `email` (texto). El conjunto de demostración contiene registros ficticios. Los datos se tratan como solo lectura.
+
+## Search Rules
+
+- Se eliminan los espacios al inicio y final del término.
+- Se compara el término normalizado con `name` y `email` usando `str.casefold()`.
+- Una coincidencia es una subcadena en cualquiera de esos dos campos.
+- Cada cliente aparece a lo sumo una vez aunque coincida en ambos campos.
+- Se conserva el orden de entrada de los clientes.
+- Los espacios interiores del término se conservan.
+
+## Validation Rules
+
+- El término debe ser una cadena de texto.
+- Tras eliminar espacios exteriores, debe contener al menos un carácter.
+- La CLI exige exactamente un argumento de búsqueda. La ausencia o exceso de argumentos produce un mensaje de uso.
+
+## Error Handling
+
+- Un término inválido en la función de búsqueda produce `ValueError` con un mensaje legible.
+- En la CLI, un término vacío o de solo espacios produce un mensaje de error en `stderr` y código de salida 2.
+- La ausencia o exceso de argumentos la gestiona `argparse`, con código 2.
+- Una búsqueda válida sin coincidencias produce el mensaje `No se encontraron clientes.` y código 0.
+
+## Acceptance Criteria
+
+- **AC-01 (FR-01):** Un único término encuentra clientes cuyo nombre o correo contiene ese término.
+- **AC-02 (FR-02):** Un fragmento que no sea el valor completo encuentra el cliente correspondiente.
+- **AC-03 (FR-03):** Cambiar mayúsculas y minúsculas del término no cambia las coincidencias.
+- **AC-04 (FR-04):** La salida muestra identificador, nombre y correo de cada coincidencia.
+- **AC-05 (FR-05):** Sin coincidencias, la CLI muestra el mensaje definido y termina con código 0.
+- **AC-06 (FR-06):** Un término vacío o de solo espacios se rechaza con un mensaje útil; la CLI termina con código 2.
+- **AC-07 (NFR-01):** `pytest -v` ejecuta pruebas automatizadas para AC-01 a AC-06 y las reglas de orden y no duplicación.
+- **AC-08 (NFR-02):** Una búsqueda funciona sin red ni credenciales y solo usa la biblioteca estándar de Python en tiempo de ejecución.
+- **AC-09 (NFR-03):** `README.md` indica requisitos de Python, instalación, ejecución y pruebas.
+
+## Test Scenarios
+
+- Buscar un fragmento de nombre, un fragmento de correo y un término presente en ambos campos.
+- Repetir una búsqueda con variantes de mayúsculas.
+- Verificar orden y ausencia de duplicados.
+- Buscar un término inexistente.
+- Probar `""`, `"   "`, una entrada no textual en la función y argumentos faltantes o extra en la CLI.
+- Verificar los campos impresos y los códigos de salida.
+
+## Constraints
+
+Se aplican C-01 a C-03 y A-01 a A-02 de `REQUIREMENTS.md`. No se necesita conexión ni API de pago.
+
+## Open Questions
+
+N/A: Q-01 y Q-02 quedaron resueltas en `REQUIREMENTS.md` para esta entrega.
+
+## CR-ADA08-01 — Existing Domain Invariant Clarification
+
+I make the existing Domain Model rule for a non-empty textual customer ID executable: constructing `Customer` with a non-string ID or the empty string raises `ValueError`. I preserve every non-empty string verbatim, including whitespace; I add no trimming or format restriction. I keep valid construction, frozen records, search and CLI behavior compatible.
+
+- **AC-10 (FR-04):** I verify rejection of non-text and empty identifiers at construction, preservation of valid identifiers and continued immutability. I do not require new validation of name or email.
+
+FILE: ARCHITECTURE.md 
+ # Architecture
+
+## Overview
+
+CLI local en Python. La entrada se valida y pasa a una función pura de búsqueda sobre registros en memoria.
+
+```mermaid
+flowchart LR
+  Usuario --> CLI
+  CLI --> Busqueda
+  Datos --> Busqueda
+  Busqueda --> CLI
+  CLI --> Salida
+```
+
+## Components
+
+- `src/customer_search/models.py`: modelo inmutable `Customer`.
+- `src/customer_search/data.py`: datos ficticios de demostración.
+- `src/customer_search/search.py`: validación y búsqueda.
+- `src/customer_search/cli.py`: argumentos, salida y errores de usuario.
+- `tests/`: pruebas unitarias y de CLI.
+
+## Responsibilities
+
+El módulo de búsqueda no imprime ni lee argumentos. La CLI no implementa reglas de coincidencia. Los datos de ejemplo se mantienen separados de ambos.
+
+## Data Flow
+
+La CLI recibe el término, llama a `search_customers(term, customers)`, formatea los resultados y devuelve un código de salida. La función devuelve una lista nueva en el orden original.
+
+## Interfaces
+
+- Python: `search_customers(term: str, customers: Iterable[Customer]) -> list[Customer]`.
+- Terminal: `python -m customer_search <término>` con `PYTHONPATH=src` o instalación editable.
+
+## Error Handling
+
+`search_customers` emite `ValueError` si el término es inválido. La CLI lo traduce a mensaje en `stderr` y código 2. La ausencia de coincidencias es una respuesta válida.
+
+## Testing Strategy
+
+`pytest` verifica búsqueda por ambos campos, fragmentos, normalización, orden, no duplicación, salida de la CLI y códigos de salida.
+
+## Dependencies
+
+Python 3.11+ y biblioteca estándar para ejecución; `pytest` para pruebas. No hay red, base de datos ni API de pago.
+
+## Design Decisions
+
+Se usa memoria para mantener la feature pequeña. `casefold()` hace la comparación insensible a mayúsculas. La lista de clientes se inyecta en la función para probar sin depender de los datos de demostración.
+
+## Trade-offs
+
+El recorrido lineal es sencillo y suficiente para el conjunto local; no ofrece indexación ni persistencia. La coincidencia es textual y no implementa búsqueda aproximada ni normalización de acentos.
+
+FILE: TASKS.md 
+ # Tasks
+
+Cada tarea ejecuta requisitos y criterios de `REQUIREMENTS.md` y `SPEC.md`; no añade reglas de producto.
+
+## T-01 Project setup
+- Goal: Crear paquete, configuración de pruebas, datos ficticios y documentación de arranque.
+- Files: `pyproject.toml`, `README.md`, `src/customer_search/__init__.py`, `src/customer_search/data.py`.
+- Acceptance: El proyecto puede instalarse localmente y contiene los datos de demostración de Q-01.
+- Verification: Instalación editable y comprobación de importación.
+
+## T-02 Domain model
+- Goal: Definir el registro de cliente usado por FR-04.
+- Files: `src/customer_search/models.py`, `src/customer_search/data.py`.
+- Acceptance: Cada registro tiene `id`, `name` y `email`.
+- Verification: Prueba de construcción y lectura de campos.
+
+## T-03 Search logic
+- Goal: Implementar FR-01 a FR-03 y las reglas de orden y no duplicación.
+- Files: `src/customer_search/search.py`.
+- Acceptance: Coincidencias parciales por nombre o correo sin distinción de mayúsculas.
+- Verification: Pruebas de AC-01 a AC-03 y reglas de búsqueda.
+
+## T-04 Validation and errors
+- Goal: Implementar FR-05 y FR-06 y la interfaz CLI.
+- Files: `src/customer_search/search.py`, `src/customer_search/cli.py`, `src/customer_search/__main__.py`.
+- Acceptance: Mensajes y códigos de salida establecidos en `SPEC.md`.
+- Verification: Pruebas de AC-04 a AC-06 y argumentos inválidos.
+
+## T-05 Tests
+- Goal: Completar las pruebas automatizadas y la cobertura de criterios de aceptación.
+- Files: `tests/test_search.py`, `tests/test_cli.py`.
+- Acceptance: AC-01 a AC-07 comprobados con pruebas de comportamiento.
+- Verification: `pytest -v`.
+
+## T-06 Documentation
+- Goal: Registrar uso, trazabilidad, revisión y resultados finales.
+- Files: `README.md`, `docs/traceability.md`, `results/agent-report.md`, `AI_USAGE_LOG.md`.
+- Acceptance: AC-08 y AC-09 tienen evidencia; trazabilidad completa y registros consistentes.
+- Verification: Revisión de documentos y ejecución documentada de la CLI y `pytest -v`.
+
+FILE: TASK_UNDER_TEST.md 
+ # Task Under Test
+
+Change ID: CR-ADA08-01
+
+## Goal
+
+I ask the agent to enforce the existing customer identifier invariant at construction, with focused regression tests.
+
+## Requirements Covered
+
+I reference FR-04 in `REQUIREMENTS.md`, the Domain Model and AC-04 / AC-10 in `SPEC.md`, and T-02 in `TASKS.md`. I leave their normative definitions there.
+
+## Verification
+
+I require a failing regression on the unchanged baseline, a passing regression after implementation, the existing search and CLI suite, and a diff limited to `src/customer_search/models.py` and the new `tests/test_model_validation.py`. I retain command exit codes, logs and a patch.
+
+## Constraints
+
+I use `REQUIREMENTS.md` and `SPEC.md` as my sources of truth. I preserve the frozen model, public constructor and all valid data. I keep runtime dependencies empty. I do not redefine requirements here or change existing tests, data, CLI or search logic.
+
+FILE: pyproject.toml 
+ [build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ada05-customer-search"
+version = "0.1.0"
+description = "Local customer search CLI for ADA-05"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+customer-search = "customer_search.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+FILE: src/customer_search/models.py 
+ """Domain model for customer records."""
+
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Customer:
+    id: str
+    name: str
+    email: str
+
+FILE: tests/test_search.py 
+ import pytest
+
+from customer_search import Customer, search_customers
+
+
+CUSTOMERS = [
+    Customer("1", "Ana López", "ana@example.com"),
+    Customer("2", "Bruno Ana", "bruno@example.com"),
+    Customer("3", "Carla", "carla@anadominio.com"),
+]
+
+
+def test_model_has_required_fields():
+    assert (CUSTOMERS[0].id, CUSTOMERS[0].name, CUSTOMERS[0].email) == (
+        "1", "Ana López", "ana@example.com"
+    )
+
+
+def test_partial_search_preserves_order():
+    assert search_customers("an", CUSTOMERS) == CUSTOMERS
+
+
+def test_partial_name_search():
+    assert search_customers("Lóp", CUSTOMERS) == [CUSTOMERS[0]]
+
+
+def test_partial_email_search():
+    assert search_customers("dominio", CUSTOMERS) == [CUSTOMERS[2]]
+
+
+def test_case_insensitive_and_trimmed():
+    assert search_customers("  LÓPEZ  ", CUSTOMERS) == [CUSTOMERS[0]]
+
+
+def test_customer_matching_both_fields_is_not_duplicated():
+    assert search_customers("ana", CUSTOMERS).count(CUSTOMERS[0]) == 1
+
+
+def test_no_matches_returns_empty_list():
+    assert search_customers("inexistente", CUSTOMERS) == []
+
+
+@pytest.mark.parametrize("term", ["", "   ", "\t\n"])
+def test_empty_term_is_rejected(term):
+    with pytest.raises(ValueError, match="no vacío"):
+        search_customers(term, CUSTOMERS)
+
+
+def test_non_text_term_is_rejected():
+    with pytest.raises(ValueError, match="debe ser texto"):
+        search_customers(None, CUSTOMERS)
+
+
+@pytest.mark.parametrize("field", ["name", "email"])
+@pytest.mark.parametrize("term", ["STRASSE", "  strasse  "])
+def test_unicode_casefold_matches_name_and_email(field, term):
+    # Unlike lower(), casefold() equates the German sharp s with ss.
+    customer = Customer(
+        "unicode",
+        "Straße" if field == "name" else "Cliente",
+        "straße@example.com" if field == "email" else "otro@example.com",
+    )
+    unrelated = Customer("other", "Bruno", "bruno@example.com")
+    assert search_customers(term, [unrelated, customer]) == [customer]
+
+
+@pytest.mark.parametrize(
+    ("term", "expected_ids"),
+    [("  ANA LÓPEZ  ", ["single"]), ("  ANA  LÓPEZ  ", ["double"])],
+)
+def test_search_preserves_internal_spaces(term, expected_ids):
+    customers = [
+        Customer("single", "Ana López", "uno@example.com"),
+        Customer("double", "Ana  López", "dos@example.com"),
+    ]
+    assert [customer.id for customer in search_customers(term, customers)] == expected_ids
+
+
+def test_search_accepts_generator_and_preserves_order():
+    customers = (customer for customer in CUSTOMERS)
+    assert search_customers("ANA", customers) == CUSTOMERS
+
+FILE: tests/test_cli.py 
+ import os
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+
+def run_cli(*arguments):
+    env = os.environ.copy()
+    src = str(Path(__file__).resolve().parents[1] / "src")
+    env["PYTHONPATH"] = os.pathsep.join(filter(None, [src, env.get("PYTHONPATH")]))
+    return subprocess.run(
+        [sys.executable, "-m", "customer_search", *arguments],
+        capture_output=True,
+        text=True,
+        check=False,
+        env=env,
+    )
+
+
+def test_cli_prints_customer_fields():
+    result = run_cli("ana")
+    assert result.returncode == 0
+    assert "C001 | Ana López | ana.lopez@example.com" in result.stdout
+
+
+def test_cli_reports_no_matches():
+    result = run_cli("inexistente")
+    assert result.returncode == 0
+    assert result.stdout.strip() == "No se encontraron clientes."
+
+
+@pytest.mark.parametrize("term", ["", "   ", "\t\n"])
+def test_cli_rejects_blank_term(term):
+    result = run_cli(term)
+    assert result.returncode == 2
+    assert "Error:" in result.stderr
+    assert "no vacío" in result.stderr
+    assert result.stdout == ""
+
+
+def test_cli_requires_exactly_one_argument():
+    for arguments in [(), ("ana", "bruno")]:
+        result = run_cli(*arguments)
+        assert result.returncode == 2
+        assert "usage:" in result.stderr
+
+
+def test_cli_trims_outer_spaces_and_preserves_inner_spaces():
+    result = run_cli("  ANA LÓPEZ  ")
+    assert result.returncode == 0
+    assert result.stdout.strip() == "C001 | Ana López | ana.lopez@example.com"
+    assert result.stderr == ""
+
