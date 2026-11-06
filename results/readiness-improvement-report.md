@@ -34,3 +34,18 @@ Yo mantuve el estado del agente entre condiciones y ejecuté una sola repetició
 Yo usé hashes como detección de cambios, no como autenticación frente a alguien que puede editar el checker y el manifiesto. Yo limité el control de secretos a nombres sensibles conocidos; yo no afirmé tener un scanner completo. Yo mantuve tags mayores de Actions y registré que no son pinning inmutable por SHA. Yo mantuve la aprobación humana para cambios de alcance, arquitectura, fuentes normativas y operaciones externas.
 
 Yo conservaré AGENTS, REPO_MAP, el gate, la CI y las pruebas negativas como base de mi siguiente proyecto porque también me permiten incorporar a otro desarrollador sin explicaciones orales sobre rutas y comandos.
+
+## Mi comparación cuantitativa observada
+
+| Métrica que yo conté | BEFORE | AFTER | Interpretación que yo sostengo |
+|---|---:|---:|---|
+| Preguntas de contexto | 0 | 0 | Yo no observé reducción. |
+| Archivos de contexto leídos explícitamente | 11 | 14 | Yo inspeccioné también mapa y automatización; yo no afirmé menos exploración. |
+| Suposiciones incorrectas observadas | 0 | 0 | Yo no inferí razonamiento no registrado. |
+| Fallos inesperados de comandos | 0 | 0 | Yo separé el red esperado de seis casos. |
+| Archivos de producto fuera de alcance | 0 | 0 | Yo conservé el diff de dos archivos. |
+| Casos de producto finales | 35 | 35 | Yo verifiqué el mismo comportamiento en ambas condiciones. |
+| Casos adicionales del contrato | 0 | 15 | Yo añadí detección automática de incumplimientos de readiness. |
+| Gate local de tres etapas disponible y aprobado | 0 | 1 | Yo comprobé una mejora operativa concreta. |
+
+Yo almacené los mismos números en `results/evidence/run-metrics.json`. Yo no sumé las pruebas del contrato como si fueran funcionalidad adicional de Customer Search.

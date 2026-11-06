@@ -1,0 +1,17 @@
+{
+  "local_tests": 50,
+  "product_tests": 35,
+  "repo_contract_tests": 15,
+  "lint": "PASS",
+  "repository_contract": "PASS",
+  "editable_install": "PASS",
+  "dependency_consistency": "PASS",
+  "bash_syntax": "PASS",
+  "outside_root_gate": "PASS",
+  "before_patch_reverse_check": "PASS",
+  "after_patch_reverse_check": "PASS",
+  "score_arithmetic": "PASS",
+  "functional_result": "PASS",
+  "strict_clean_session_protocol": "PARTIAL",
+  "remote_ci": "NOT_RUN"
+}

@@ -1,0 +1,118 @@
+[
+  {
+    "name": "verification",
+    "started_at_utc": "2026-11-06T00:06:31.200978+00:00",
+    "finished_at_utc": "2026-11-06T00:06:32.588796+00:00",
+    "cwd": ".",
+    "argv": [
+      "bash",
+      "/workspace/ada08/scripts/verify_repo.sh"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/final-verification.txt"
+  },
+  {
+    "name": "dependencies",
+    "started_at_utc": "2026-11-06T00:06:33.952613+00:00",
+    "finished_at_utc": "2026-11-06T00:06:34.149269+00:00",
+    "cwd": ".",
+    "argv": [
+      "/workspace/ada08/.venv/bin/python",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/final-dependencies.txt"
+  },
+  {
+    "name": "diff-whitespace",
+    "started_at_utc": "2026-11-06T00:06:34.153553+00:00",
+    "finished_at_utc": "2026-11-06T00:06:34.166311+00:00",
+    "cwd": ".",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 2,
+    "expected_exit_code": 0,
+    "log": "results/evidence/final-diff-whitespace.txt"
+  },
+  {
+    "name": "verification",
+    "started_at_utc": "2026-11-06T00:06:51.421526+00:00",
+    "finished_at_utc": "2026-11-06T00:06:52.824597+00:00",
+    "cwd": ".",
+    "argv": [
+      "bash",
+      "/workspace/ada08/scripts/verify_repo.sh"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/final-verification-2.txt"
+  },
+  {
+    "name": "dependencies",
+    "started_at_utc": "2026-11-06T00:06:54.060781+00:00",
+    "finished_at_utc": "2026-11-06T00:06:54.255537+00:00",
+    "cwd": ".",
+    "argv": [
+      "/workspace/ada08/.venv/bin/python",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/final-dependencies-2.txt"
+  },
+  {
+    "name": "diff-whitespace",
+    "started_at_utc": "2026-11-06T00:06:54.255806+00:00",
+    "finished_at_utc": "2026-11-06T00:06:54.270912+00:00",
+    "cwd": ".",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/final-diff-whitespace-2.txt"
+  },
+  {
+    "name": "before-patch-check",
+    "started_at_utc": "2026-11-06T00:06:54.271190+00:00",
+    "finished_at_utc": "2026-11-06T00:06:54.279313+00:00",
+    "cwd": "work/before",
+    "argv": [
+      "git",
+      "apply",
+      "--reverse",
+      "--check",
+      "/workspace/ada08/results/evidence/before.diff"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/final-before-patch-check.txt"
+  },
+  {
+    "name": "after-patch-check",
+    "started_at_utc": "2026-11-06T00:06:54.279572+00:00",
+    "finished_at_utc": "2026-11-06T00:06:54.286808+00:00",
+    "cwd": "work/after",
+    "argv": [
+      "git",
+      "apply",
+      "--reverse",
+      "--check",
+      "/workspace/ada08/results/evidence/after.diff"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/final-after-patch-check.txt"
+  }
+]

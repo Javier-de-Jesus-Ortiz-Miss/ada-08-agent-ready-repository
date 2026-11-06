@@ -7,5 +7,10 @@
   "baseline_file_count": 8,
   "independent_clean_sessions": false,
   "strict_protocol_result": "PARTIAL",
+  "after_initial_inherited_files_match_baseline": true,
+  "task_and_official_input_equal": true,
+  "after_implementation_written_from_original_model": true,
+  "final_source_adopted_from_after": true,
+  "functional_result": "PASS",
   "baseline_ref": "ada08-baseline"
 }

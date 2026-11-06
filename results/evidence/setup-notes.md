@@ -9,3 +9,5 @@ I observed that `.agents/` is write protected by this environment. I kept my inh
 I created the local baseline, audit commit and worktrees before executing the controlled task.
 
 I used no subagents and no independent agent sessions. I disclose these setup events separately from the controlled command ledgers.
+
+I detected two extra end-of-file blank lines in run reports during final diff hygiene checks. I removed those formatting defects and retained the failed check output before rerunning validation. I did not count this delivery cleanup as a BEFORE/AFTER task failure.

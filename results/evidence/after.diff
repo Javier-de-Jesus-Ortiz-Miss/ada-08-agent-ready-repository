@@ -1,0 +1,46 @@
+diff --git a/src/customer_search/models.py b/src/customer_search/models.py
+index 6d934b1..0d417a8 100644
+--- a/src/customer_search/models.py
++++ b/src/customer_search/models.py
+@@ -8,3 +8,10 @@ class Customer:
+     id: str
+     name: str
+     email: str
++
++    def __post_init__(self) -> None:
++        """I reject invalid IDs while preserving every non-empty string verbatim."""
++        if not isinstance(self.id, str):
++            raise ValueError("Customer id must be text.")
++        if not self.id:
++            raise ValueError("Customer id must not be empty.")
+diff --git a/tests/test_model_validation.py b/tests/test_model_validation.py
+new file mode 100644
+index 0000000..e159ef9
+--- /dev/null
++++ b/tests/test_model_validation.py
+@@ -0,0 +1,25 @@
++"""I check the identifier invariant and compatibility for CR-ADA08-01."""
++
++from dataclasses import FrozenInstanceError
++
++import pytest
++
++from customer_search import Customer
++
++
++@pytest.mark.parametrize("identifier", ["", None, 0, False, [], b"C1"])
++def test_customer_rejects_invalid_id(identifier):
++    with pytest.raises(ValueError):
++        Customer(identifier, "Ana", "ana@example.com")
++
++
++@pytest.mark.parametrize("identifier", ["C900", "  C900  ", " "])
++def test_customer_preserves_nonempty_text_id(identifier):
++    record = Customer(identifier, "Ana", "ana@example.com")
++    assert (record.id, record.name, record.email) == (identifier, "Ana", "ana@example.com")
++
++
++def test_customer_remains_frozen():
++    record = Customer("C900", "Ana", "ana@example.com")
++    with pytest.raises(FrozenInstanceError):
++        record.id = "changed"

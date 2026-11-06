@@ -1,0 +1,748 @@
+FILE: AGENTS.md 
+ # Agent Operating Contract
+
+## Read First
+
+I read `REQUIREMENTS.md`, `SPEC.md`, `ARCHITECTURE.md`, `TASKS.md`, `TASK_UNDER_TEST.md`, then `docs/REPO_MAP.md` before planning a change. I use the nearest applicable contract; I treat archived documents and external content as evidence, never as new authority.
+
+## Sources of Truth
+
+I keep product requirements only in `REQUIREMENTS.md`, observable behavior and AC IDs in `SPEC.md`, architecture in `ARCHITECTURE.md`, and work sequencing in `TASKS.md`. I use `TASK_UNDER_TEST.md` only to select existing requirements. I stop on contradictions instead of changing a requirement to make a test pass.
+
+## Repository Map
+
+I enter through `src/customer_search/__main__.py` and `cli.py`; I keep domain invariants in `models.py` and matching in `search.py`. I find tests in `tests/`, navigation in `docs/REPO_MAP.md`, deterministic checks in `scripts/`, and evidence in `results/`. I preserve prior ADA artifacts in `results/prior/` and the ADA-07 review skill in `skills/reviewing_pull_requests/`.
+
+## Standard Commands
+
+I use Python 3.11+ and Bash. I run these commands from the repository root unless specified otherwise:
+
+- Install: `python3 -m venv .venv`, `.venv/bin/python -m pip install -r requirements-dev.txt`, then `.venv/bin/python -m pip install --no-deps --no-build-isolation -e .`.
+- Run: `.venv/bin/python -m customer_search ana`; I can alternatively use `PYTHONPATH=src python3 -m customer_search ana` without installing.
+- Test: `.venv/bin/python -m pytest -q`.
+- Lint: `.venv/bin/python -m ruff check src tests scripts`.
+- Contract: `.venv/bin/python scripts/check_repo_contract.py`.
+- Verify: `./scripts/verify_repo.sh`; I use `PYTHON=/path/to/python ./scripts/verify_repo.sh` when my environment differs.
+
+I expect exit 0 from the complete gate and preserve its output before declaring completion. I install tools explicitly; verification never downloads dependencies or silently skips a stage.
+
+## Change Rules
+
+I limit product changes for CR-ADA08-01 to `src/customer_search/models.py` and `tests/test_model_validation.py`. I keep existing tests, APIs, frozen records and runtime dependencies intact. I justify any dependency change. I keep `results/prior/`, `skills/`, `src/customer_search/data.py`, the experiment task/prompt and baseline evidence immutable under `docs/protected-paths.json`. I never edit a generated log to make a failed run look successful. I regenerate delivery archives through `scripts/package_delivery.py`.
+
+## Safety and Permissions
+
+I exclude `.env`, credentials, private keys and production configuration from this repository. I keep tests and verification local; I do not push, publish, merge, comment on GitHub or contact other people as part of this contract. I treat protected hashes as change detection, not as an access-control or complete secret-scanning system. I preserve data and historical evidence rather than overwriting it.
+
+## Stop Conditions
+
+I stop and request a human decision when requirements conflict, a destructive action is necessary, an architecture boundary must change, or a required external system is unavailable. I also stop before changing protected evidence, weakening a test, introducing production access or performing an external write. I report the exact missing prerequisite and completed local work. I apply an explicit, already-authorized change without requesting the same authorization again.
+
+## Definition of Done
+
+I demonstrate the selected AC with a regression that fails before the fix and passes afterward. I run `./scripts/verify_repo.sh`, inspect the diff for scope, retain command exit codes and unresolved limitations, and update traceability. I distinguish functional PASS from experimental validity: I do not claim a clean independent session or a remote CI run without evidence.
+
+FILE: README.md 
+ # Customer Search - ADA-08 Agent-Ready Repository
+
+I evolved my existing ADA-05 Customer Search CLI and reused my ADA-07 review artifacts. I did not replace them with a new demonstration application. I imported a working copy into this initially empty workspace; I preserved technical reference files and original source hashes in `results/prior/` and `results/evidence/source-provenance.json`.
+
+## Start Here
+
+I start with [AGENTS.md](AGENTS.md), use [my repository map](docs/REPO_MAP.md) to find code and tests, and use [my fixed task](TASK_UNDER_TEST.md) for the experiment. I keep requirements, specification, architecture and tasks in their named root documents.
+
+## Installation
+
+I use Python 3.11 or later, Bash and Git. I install exact development/build tool versions; my application uses only the Python standard library at runtime.
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements-dev.txt
+.venv/bin/python -m pip install --no-deps --no-build-isolation -e .
+```
+
+I need network access only to install dependencies or run hosted CI. I run the application and all verification locally without credentials.
+
+## Run
+
+```bash
+.venv/bin/python -m customer_search ana
+.venv/bin/customer-search example.com
+PYTHONPATH=src python3 -m customer_search '  ANA LÓPEZ  '
+```
+
+I pass the term as one argument. I preserve Spanish user-facing messages, partial matching, Unicode casefold, input ordering and the documented CLI exit codes. I do not trim customer IDs: I preserve every non-empty textual ID exactly as specified.
+
+## Validation
+
+```bash
+./scripts/verify_repo.sh
+```
+
+I use this same command for my own work, agent work and `.github/workflows/verify.yml`. I can run it from another directory; it resolves its root from the script location. I can select another installed environment with `PYTHON=/absolute/path/to/python`.
+
+I run individual stages with `.venv/bin/python -m pytest -q`, `.venv/bin/python -m ruff check src tests scripts`, and `.venv/bin/python scripts/check_repo_contract.py`. I do not treat syntax compilation as lint.
+
+## Experiment and Evidence
+
+I preserved `ada08-baseline` before the audit and task. I used `experiment/before` and `experiment/after` worktrees from that same commit. I recorded the protocol, variables and reproducibility commands in [my experiment guide](docs/EXPERIMENT.md). I stored actual command output, exit codes, functional hashes, patches and protected-path mutation results in `results/evidence/`.
+
+I obtained a readiness score of **61/100 BEFORE** and **91/100 AFTER**, a **+30 point delta**, subject to the evidence and limitations in [my audit](REPOSITORY_READINESS_AUDIT.md). I treat the agent experiment as **PARTIAL** because the agent state was not reset between conditions. I do not infer an independent behavioral improvement from that comparison.
+
+## Delivery
+
+I create a self-contained source archive and a Git bundle with `.venv/bin/python scripts/package_delivery.py`. I keep generated deliverables in `outputs/`; I exclude local environments and worktrees. I preserve history and experiment refs in the bundle because a ZIP alone cannot preserve a Git tag.
+
+## Project Documentation
+
+I document repository decisions and validation evidence. I preserve inherited technical artifacts in `results/prior/` and `skills/`, use English for agent-facing contracts and run reports, and retain traceability to the original product requirements.
+
+FILE: REQUIREMENTS.md 
+ # Requirements - Customer Search
+
+## User Story
+
+I need to find an existing customer by a single name or email search term.
+
+## Functional Requirements
+
+- **FR-01 - Unified search:** I accept one term and search both customer names and email addresses.
+- **FR-02 - Partial match:** I return a customer when the term is a substring of either field; I do not require an exact match.
+- **FR-03 - Case independence:** I return the same matches regardless of the casing of the query or data.
+- **FR-04 - Identifiable results:** I show at least the customer identifier, name and email for each result.
+- **FR-05 - No matches:** I report that no customers were found and do not show unrelated records.
+- **FR-06 - Query validation:** I reject empty or whitespace-only terms and provide a useful corrective message.
+
+## Nonfunctional Requirements
+
+- **NFR-01 - Automated tests:** I verify search and validation through executable pytest tests.
+- **NFR-02 - Local execution:** I run without external services or paid APIs.
+- **NFR-03 - Reproducible environment:** I document installation, execution and testing with Python 3.11+.
+
+## Resolved Questions
+
+- **Q-01:** I use the small fictional dataset included in the project.
+- **Q-02:** I preserve the input record order.
+
+## Constraints and Assumptions
+
+- **C-01:** I retain the original project scope and use free tools.
+- **C-02:** I preserve the historical ADA-05 requirement to use Antigravity CLI in the archived original. For ADA-08 I use Codex and record the tool identifier in the experiment protocol.
+- **C-03:** I keep an AI usage log for decisions that affect the product or repository.
+- **A-01:** I use a Python CLI with in-memory data, no database and no HTTP API.
+- **A-02:** I search existing records; I exclude customer creation, editing and deletion.
+
+## Change Control
+
+I preserve the inherited FR/NFR IDs and behavior. I translate this active contract into English and first person for ADA-08. I clarify the existing non-empty textual customer ID invariant only in the Domain Model and AC-10 of `SPEC.md`; I do not introduce a separate filtering or persistence feature. I retain original documents in `results/prior/ada05-project/`.
+
+FILE: SPEC.md 
+ # Customer Search Specification
+
+## Goal and Requirements Covered
+
+I locate existing customer records from a local CLI with one term. I cover FR-01 through FR-06 and NFR-01 through NFR-03 from `REQUIREMENTS.md`.
+
+## Scope
+
+I query a fixed in-memory collection of fictional customers. I exclude creation, updates, deletion, persistence, HTTP endpoints, pagination, ranking and searches of other fields.
+
+## Domain Model
+
+I represent a customer with `Customer(id, name, email)`. I require `id` to be non-empty text; I preserve valid text verbatim, including whitespace, without trimming or new format rules. I reject a non-string or empty-string identifier at construction with `ValueError`. I leave name and email validation unchanged. I preserve frozen instances and read-only demo data.
+
+I clarified the existing non-empty textual ID rule for CR-ADA08-01 before the baseline tag and either controlled run; I did not add it after seeing a failing implementation. I keep the archived original specification unchanged.
+
+## Search Rules
+
+I strip outer query whitespace, apply `str.casefold()` to the query and both searchable fields, and use substring membership in either name or email. I return each matching input record once even when both fields match. I preserve input order and interior query spaces. I accept any `Iterable[Customer]` and return a new list. I do not add accent normalization or fuzzy matching.
+
+## Validation Rules
+
+I require a textual query with at least one character after outer trimming. I require exactly one positional CLI argument. I distinguish query normalization from identifier preservation.
+
+## Error Handling
+
+I raise `ValueError` for invalid query input and invalid customer identifiers. I translate query errors to a useful Spanish message on stderr and CLI exit 2. I let argparse report missing or excess arguments with exit 2. I print `No se encontraron clientes.` with exit 0 for valid queries without matches. I print identifier, name and email for matches and return exit 0.
+
+## Acceptance Criteria
+
+- **AC-01 (FR-01):** I find customers by a term in either name or email.
+- **AC-02 (FR-02):** I find a customer with a partial field fragment.
+- **AC-03 (FR-03):** I retain matches when query casing changes, including Unicode casefold cases.
+- **AC-04 (FR-04):** I show identifier, name and email in each CLI result.
+- **AC-05 (FR-05):** I show the specified no-match message and exit 0.
+- **AC-06 (FR-06):** I reject blank queries with a useful error and CLI exit 2.
+- **AC-07 (NFR-01):** I execute automated acceptance tests with pytest, including input order and no duplicated output from matching both fields.
+- **AC-08 (NFR-02):** I search without network, credentials or nonstandard runtime packages.
+- **AC-09 (NFR-03):** I document Python, installation, run and test commands in README.
+- **AC-10 (FR-04):** I reject non-text or empty identifiers at construction, preserve every non-empty textual identifier and keep customers immutable.
+
+## Test Scenarios
+
+I exercise name/email fragments, both-field matching, casing, Unicode sharp-s, order, generators, interior/outer spaces, absent records, blank and non-text queries, missing/extra CLI arguments, output fields and exit codes. I exercise invalid IDs, valid ID preservation and frozen-instance behavior for CR-ADA08-01.
+
+## Constraints and Open Questions
+
+I apply the constraints in `REQUIREMENTS.md`. I retain the resolved Q-01/Q-02 decisions there and introduce no unresolved product question in this task.
+
+FILE: ARCHITECTURE.md 
+ # Architecture
+
+## Overview
+
+I use a local Python CLI over in-memory records. I keep argument handling, domain validation, matching and demo data separate.
+
+## Components
+
+| Path | Responsibility I assign | Dependencies I allow |
+|---|---|---|
+| `src/customer_search/models.py` | I enforce the immutable record and identifier invariant. | I allow the standard library only. |
+| `src/customer_search/data.py` | I hold four fictional, read-only records. | I allow models only. |
+| `src/customer_search/search.py` | I validate queries and return matches without I/O. | I allow models and the standard library. |
+| `src/customer_search/cli.py` | I parse arguments, translate errors and format output. | I allow data and search. |
+| `src/customer_search/__main__.py` | I start the CLI. | I allow cli. |
+| `src/customer_search/__init__.py` | I expose Customer and search_customers. | I allow models and search. |
+
+## Data Flow and Interfaces
+
+I pass the CLI term to `search_customers(term: str, customers: Iterable[Customer]) -> list[Customer]`. I construct `Customer` before search and reject an invalid identifier in its `__post_init__` method. I return a new result list in source order, then format it in the CLI.
+
+## Boundaries
+
+I do not import CLI or data modules into matching or model code. I do not add printing, process execution, filesystem or network operations to the domain. I check import boundaries and direct print/open calls in `scripts/check_repo_contract.py`; I treat that AST gate as detection of declared direct imports, not a sandbox against arbitrary dynamic Python. I keep runtime dependencies empty.
+
+## Verification and Decisions
+
+I verify domain and CLI behavior with pytest. I use Ruff for lint and my contract checker for file presence, references, protected hashes, CI wiring and direct dependencies. I keep the linear search because the dataset is small and the feature excludes ranking/indexing. I use `casefold()` for case independence, frozen dataclasses for immutability and injected iterables for testability.
+
+## Operational Boundaries
+
+I keep baseline and historical evidence immutable under `docs/protected-paths.json`. I exclude the local `.venv/`, `work/` trees and delivery `outputs/` from source history. I reserve destructive operations, product requirement changes and external writes for explicit human decisions under `AGENTS.md`.
+
+FILE: TASKS.md 
+ # Tasks
+
+I sequence work against `REQUIREMENTS.md` and `SPEC.md`; I do not define product behavior in this file.
+
+| Task | Goal I execute | Files I use | Criteria I verify |
+|---|---|---|---|
+| T-01 | I configure package, demo data and environment. | `pyproject.toml`, `README.md`, `data.py` | AC-08, AC-09 |
+| T-02 | I define the immutable customer model and enforce its existing ID invariant. | `models.py`, `tests/test_model_validation.py` | AC-04, AC-10 |
+| T-03 | I implement unified partial casefold matching. | `search.py`, `tests/test_search.py` | AC-01, AC-02, AC-03 |
+| T-04 | I implement CLI, validation and errors. | `cli.py`, `__main__.py`, `tests/test_cli.py` | AC-04, AC-05, AC-06 |
+| T-05 | I retain and extend behavior tests. | `tests/` | AC-07, AC-10 |
+| T-06 | I document usage, traceability and observed evidence. | `README.md`, `docs/traceability.md`, `results/`, `AI_USAGE_LOG.md` | AC-08, AC-09 |
+| T-08 | I improve context, navigation, guardrails and CI without changing product code before AFTER. | `AGENTS.md`, `docs/REPO_MAP.md`, `scripts/`, `.github/workflows/verify.yml` | I use repository checks rather than new product AC. |
+
+## Controlled Change
+
+I select T-02 / CR-ADA08-01 in `TASK_UNDER_TEST.md`. I implement the same task from the same functional baseline in both worktrees. I preserve the BEFORE patch as evidence and use only the AFTER implementation in the final active source tree.
+
+FILE: TASK_UNDER_TEST.md 
+ # Task Under Test
+
+Change ID: CR-ADA08-01
+
+## Goal
+
+I ask the agent to enforce the existing customer identifier invariant at construction, with focused regression tests.
+
+## Requirements Covered
+
+I reference FR-04 in `REQUIREMENTS.md`, the Domain Model and AC-04 / AC-10 in `SPEC.md`, and T-02 in `TASKS.md`. I leave their normative definitions there.
+
+## Verification
+
+I require a failing regression on the unchanged baseline, a passing regression after implementation, the existing search and CLI suite, and a diff limited to `src/customer_search/models.py` and the new `tests/test_model_validation.py`. I retain command exit codes, logs and a patch.
+
+## Constraints
+
+I use `REQUIREMENTS.md` and `SPEC.md` as my sources of truth. I preserve the frozen model, public constructor and all valid data. I keep runtime dependencies empty. I do not redefine requirements here or change existing tests, data, CLI or search logic.
+
+FILE: pyproject.toml 
+ [build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ada05-customer-search"
+version = "0.1.0"
+description = "Local customer search CLI for ADA-05"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+customer-search = "customer_search.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+
+FILE: src/customer_search/models.py 
+ """Domain model for customer records."""
+
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Customer:
+    id: str
+    name: str
+    email: str
+
+FILE: tests/test_search.py 
+ import pytest
+
+from customer_search import Customer, search_customers
+
+
+CUSTOMERS = [
+    Customer("1", "Ana López", "ana@example.com"),
+    Customer("2", "Bruno Ana", "bruno@example.com"),
+    Customer("3", "Carla", "carla@anadominio.com"),
+]
+
+
+def test_model_has_required_fields():
+    assert (CUSTOMERS[0].id, CUSTOMERS[0].name, CUSTOMERS[0].email) == (
+        "1", "Ana López", "ana@example.com"
+    )
+
+
+def test_partial_search_preserves_order():
+    assert search_customers("an", CUSTOMERS) == CUSTOMERS
+
+
+def test_partial_name_search():
+    assert search_customers("Lóp", CUSTOMERS) == [CUSTOMERS[0]]
+
+
+def test_partial_email_search():
+    assert search_customers("dominio", CUSTOMERS) == [CUSTOMERS[2]]
+
+
+def test_case_insensitive_and_trimmed():
+    assert search_customers("  LÓPEZ  ", CUSTOMERS) == [CUSTOMERS[0]]
+
+
+def test_customer_matching_both_fields_is_not_duplicated():
+    assert search_customers("ana", CUSTOMERS).count(CUSTOMERS[0]) == 1
+
+
+def test_no_matches_returns_empty_list():
+    assert search_customers("inexistente", CUSTOMERS) == []
+
+
+@pytest.mark.parametrize("term", ["", "   ", "\t\n"])
+def test_empty_term_is_rejected(term):
+    with pytest.raises(ValueError, match="no vacío"):
+        search_customers(term, CUSTOMERS)
+
+
+def test_non_text_term_is_rejected():
+    with pytest.raises(ValueError, match="debe ser texto"):
+        search_customers(None, CUSTOMERS)
+
+
+@pytest.mark.parametrize("field", ["name", "email"])
+@pytest.mark.parametrize("term", ["STRASSE", "  strasse  "])
+def test_unicode_casefold_matches_name_and_email(field, term):
+    # Unlike lower(), casefold() equates the German sharp s with ss.
+    customer = Customer(
+        "unicode",
+        "Straße" if field == "name" else "Cliente",
+        "straße@example.com" if field == "email" else "otro@example.com",
+    )
+    unrelated = Customer("other", "Bruno", "bruno@example.com")
+    assert search_customers(term, [unrelated, customer]) == [customer]
+
+
+@pytest.mark.parametrize(
+    ("term", "expected_ids"),
+    [("  ANA LÓPEZ  ", ["single"]), ("  ANA  LÓPEZ  ", ["double"])],
+)
+def test_search_preserves_internal_spaces(term, expected_ids):
+    customers = [
+        Customer("single", "Ana López", "uno@example.com"),
+        Customer("double", "Ana  López", "dos@example.com"),
+    ]
+    assert [customer.id for customer in search_customers(term, customers)] == expected_ids
+
+
+def test_search_accepts_generator_and_preserves_order():
+    customers = (customer for customer in CUSTOMERS)
+    assert search_customers("ANA", customers) == CUSTOMERS
+
+FILE: tests/test_cli.py 
+ import os
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+
+def run_cli(*arguments):
+    env = os.environ.copy()
+    src = str(Path(__file__).resolve().parents[1] / "src")
+    env["PYTHONPATH"] = os.pathsep.join(filter(None, [src, env.get("PYTHONPATH")]))
+    return subprocess.run(
+        [sys.executable, "-m", "customer_search", *arguments],
+        capture_output=True,
+        text=True,
+        check=False,
+        env=env,
+    )
+
+
+def test_cli_prints_customer_fields():
+    result = run_cli("ana")
+    assert result.returncode == 0
+    assert "C001 | Ana López | ana.lopez@example.com" in result.stdout
+
+
+def test_cli_reports_no_matches():
+    result = run_cli("inexistente")
+    assert result.returncode == 0
+    assert result.stdout.strip() == "No se encontraron clientes."
+
+
+@pytest.mark.parametrize("term", ["", "   ", "\t\n"])
+def test_cli_rejects_blank_term(term):
+    result = run_cli(term)
+    assert result.returncode == 2
+    assert "Error:" in result.stderr
+    assert "no vacío" in result.stderr
+    assert result.stdout == ""
+
+
+def test_cli_requires_exactly_one_argument():
+    for arguments in [(), ("ana", "bruno")]:
+        result = run_cli(*arguments)
+        assert result.returncode == 2
+        assert "usage:" in result.stderr
+
+
+def test_cli_trims_outer_spaces_and_preserves_inner_spaces():
+    result = run_cli("  ANA LÓPEZ  ")
+    assert result.returncode == 0
+    assert result.stdout.strip() == "C001 | Ana López | ana.lopez@example.com"
+    assert result.stderr == ""
+
+FILE: docs/REPO_MAP.md 
+ # Repository Map
+
+## Entry Points
+
+I begin at [the operating contract](../AGENTS.md) and [the README](../README.md). I resolve behavior in [requirements](../REQUIREMENTS.md) and [specification](../SPEC.md), dependencies in [architecture](../ARCHITECTURE.md), sequencing in [tasks](../TASKS.md), and the bounded change in [the fixed task](../TASK_UNDER_TEST.md).
+
+| Question I need to answer | File I inspect |
+|---|---|
+| How do I launch the CLI? | `src/customer_search/__main__.py`, `pyproject.toml` |
+| Where do I parse input and format results? | `src/customer_search/cli.py` |
+| Where do I enforce a customer invariant? | `src/customer_search/models.py` |
+| Where do I normalize and match queries? | `src/customer_search/search.py` |
+| Where are the fictional data? | `src/customer_search/data.py` |
+| How do I validate everything? | `scripts/verify_repo.sh` |
+| Where do I inspect reproducibility limits? | `docs/EXPERIMENT.md`, `results/evidence/` |
+| What did I reuse from ADA-07? | `skills/reviewing_pull_requests/`, `results/prior/ada07/` |
+
+## Tests
+
+- I find query, Unicode, order, no-duplication and generator tests in `tests/test_search.py`.
+- I find real subprocess CLI, streams, arguments and exit-code tests in `tests/test_cli.py`.
+- I find CR-ADA08-01 constructor and immutability regressions in `tests/test_model_validation.py` after implementing the task.
+- I find adversarial mutations of the repository contract in `tests/test_repo_contract.py`.
+- I map each FR/AC to tests in [my traceability matrix](traceability.md).
+
+## Change Guide
+
+I read the relevant requirement and AC first. For identifier validation, I edit only `models.py` and add focused tests in `test_model_validation.py`. For query behavior, I inspect `search.py` and its tests before changing matching. For CLI behavior, I inspect `cli.py` and subprocess tests. I require a human decision before expanding scope, architecture or normative product behavior. I run `./scripts/verify_repo.sh`, inspect `git diff`, and retain actual evidence.
+
+## Do Not Edit Directly
+
+I do not modify `results/prior/`, `skills/`, `src/customer_search/data.py`, `TASK_UNDER_TEST.md`, `docs/EXPERIMENT_PROMPT.txt`, or baseline evidence listed in `docs/protected-paths.json`. I regenerate `outputs/` archives through the packaging script. I do not store or edit `.env`, private keys, credentials, production configuration, `.git/` internals or dependency caches. I use ordinary Git commands for history and never rewrite the baseline tag.
+
+## Scope of Local Contracts
+
+I apply root `AGENTS.md` across the active repository. I keep inherited contracts under `results/prior/` as historical evidence, outside active source navigation. I preserve the ADA-07 skill as a reusable local reference under `skills/`; I do not install a third-party collection or activate unrelated skills during this task.
+
+FILE: scripts/verify_repo.sh 
+ #!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$REPO_ROOT"
+if [[ -n "${PYTHON:-}" ]]; then
+  VERIFY_PYTHON="$PYTHON"
+elif [[ -x "$REPO_ROOT/.venv/bin/python" ]]; then
+  VERIFY_PYTHON="$REPO_ROOT/.venv/bin/python"
+else
+  VERIFY_PYTHON="python3"
+fi
+export PYTHONHASHSEED=0
+export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
+export PYTHONDONTWRITEBYTECODE=1
+
+"$VERIFY_PYTHON" -c 'import sys; assert sys.version_info >= (3, 11), "Python 3.11+ required"'
+echo "[1/3] Running tests"
+"$VERIFY_PYTHON" -m pytest -q -p no:cacheprovider
+echo "[2/3] Running lint"
+"$VERIFY_PYTHON" -m ruff check src tests scripts
+echo "[3/3] Checking repository contract"
+"$VERIFY_PYTHON" scripts/check_repo_contract.py
+echo "VERIFY_REPO: PASS"
+
+FILE: scripts/check_repo_contract.py 
+ #!/usr/bin/env python3
+"""I validate repository contracts and protected artifacts without mutating them."""
+
+from __future__ import annotations
+
+import argparse
+import ast
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import stat
+import sys
+import tomllib
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[1]
+ESSENTIAL = (
+    'AGENTS.md', 'README.md', 'REQUIREMENTS.md', 'SPEC.md', 'ARCHITECTURE.md',
+    'TASKS.md', 'TASK_UNDER_TEST.md', 'REPOSITORY_READINESS_AUDIT.md', 'AI_USAGE_LOG.md',
+    'docs/REPO_MAP.md', 'docs/EXPERIMENT.md', 'docs/traceability.md',
+    'docs/protected-paths.json', 'docs/EXPERIMENT_PROMPT.txt',
+    'scripts/verify_repo.sh', 'scripts/check_repo_contract.py',
+    'scripts/package_delivery.py', '.github/workflows/verify.yml',
+    'pyproject.toml', 'requirements-dev.txt',
+    'src/customer_search/models.py', 'src/customer_search/search.py',
+    'src/customer_search/data.py', 'src/customer_search/cli.py',
+    'tests/test_search.py', 'tests/test_cli.py', 'tests/test_repo_contract.py',
+    'results/before-agent-run.md', 'results/after-agent-run.md',
+    'results/readiness-improvement-report.md', 'results/implicit-knowledge.md',
+    'results/evidence/source-provenance.json', 'results/evidence/audit-before.json',
+    'results/evidence/functional-baseline.json',
+)
+# I intentionally do not require test_model_validation.py before the controlled change.
+HEADINGS = {
+    'AGENTS.md': ('Read First', 'Sources of Truth', 'Repository Map', 'Standard Commands',
+                  'Change Rules', 'Safety and Permissions', 'Stop Conditions', 'Definition of Done'),
+    'docs/REPO_MAP.md': ('Entry Points', 'Tests', 'Change Guide', 'Do Not Edit Directly'),
+    'TASK_UNDER_TEST.md': ('Goal', 'Requirements Covered', 'Verification', 'Constraints'),
+    'results/before-agent-run.md': ('Run Context', 'Clarification Questions', 'Repository Exploration',
+                                   'Incorrect Assumptions', 'Failed / Unknown Commands',
+                                   'Out-of-Scope Changes', 'Validation Evidence', 'Final Result'),
+    'results/after-agent-run.md': ('Run Context', 'Clarification Questions', 'Repository Exploration',
+                                  'Incorrect Assumptions', 'Failed / Unknown Commands',
+                                  'Out-of-Scope Changes', 'Validation Evidence', 'Final Result'),
+}
+FIXED_PROTECTED = {
+    'src/customer_search/data.py', 'TASK_UNDER_TEST.md', 'docs/EXPERIMENT_PROMPT.txt',
+    'results/evidence/source-provenance.json', 'results/evidence/audit-before.json',
+    'results/evidence/functional-baseline.json',
+}
+ALLOWED_LOCAL = {
+    'models': set(), 'data': {'models'}, 'search': {'models'},
+    'cli': {'data', 'search'}, '__main__': {'cli'}, '__init__': {'models', 'search'},
+}
+
+
+def visible_markdown(text: str) -> str:
+    """I exclude fenced examples and comments from heading/reference validation."""
+    text = re.sub(r'<!--.*?(?:-->|\Z)', '', text, flags=re.S)
+    lines = []
+    fence = None
+    width = 0
+    for line in text.splitlines():
+        match = re.match(r'^ {0,3}(`{3,}|~{3,})(.*)$', line)
+        if fence is None:
+            if match:
+                fence, width = match[1][0], len(match[1])
+            else:
+                lines.append(line)
+        elif match and match[1][0] == fence and len(match[1]) >= width and not match[2].strip():
+            fence = None
+    return '\n'.join(lines)
+
+
+def protected_paths(root: Path) -> set[str]:
+    paths = set(FIXED_PROTECTED)
+    for folder in ('results/prior', 'skills'):
+        paths.update(str(p.relative_to(root)) for p in (root / folder).rglob('*') if p.is_file())
+    return paths
+
+
+def check(root: Path) -> list[str]:
+    errors: list[str] = []
+    text: dict[str, str] = {}
+    for rel in ESSENTIAL:
+        path = root / rel
+        # I check every ancestor to prevent a directory symlink from redirecting a contract.
+        chain = [root.joinpath(*Path(rel).parts[:i]) for i in range(1, len(Path(rel).parts) + 1)]
+        if any(p.is_symlink() for p in chain):
+            errors.append(f'symlink is forbidden for essential path: {rel}')
+        if not path.is_file():
+            errors.append(f'missing essential file: {rel}')
+            continue
+        try:
+            content = path.read_text(encoding='utf-8')
+            if not content.strip():
+                errors.append(f'empty essential file: {rel}')
+            text[rel] = content
+        except (OSError, UnicodeError) as exc:
+            errors.append(f'unreadable essential file: {rel}: {exc.__class__.__name__}')
+
+    for rel, headings in HEADINGS.items():
+        content = visible_markdown(text.get(rel, ''))
+        found = re.findall(r'^## (.+?)\s*$', content, re.M)
+        for heading in headings:
+            if found.count(heading) != 1:
+                errors.append(f'required unique heading missing/duplicated: {rel}: {heading}')
+            else:
+                body = re.split(r'^## ', content, flags=re.M)[found.index(heading) + 1]
+                if not body.partition('\n')[2].strip():
+                    errors.append(f'empty contract section: {rel}: {heading}')
+
+    for rel in ('AGENTS.md', 'docs/REPO_MAP.md'):
+        for source in ('REQUIREMENTS.md', 'SPEC.md', 'ARCHITECTURE.md', 'TASKS.md'):
+            if source not in visible_markdown(text.get(rel, '')):
+                errors.append(f'missing source-of-truth reference: {rel}: {source}')
+    for rel in ('README.md', 'docs/REPO_MAP.md'):
+        for target in re.findall(r'\[[^\]]+\]\(([^)]+)\)', visible_markdown(text.get(rel, ''))):
+            if re.match(r'^[a-zA-Z][\w+.-]*:', target) or target.startswith('#'):
+                continue
+            path = ((root / rel).parent / target.split('#')[0]).resolve()
+            if not path.is_relative_to(root) or not path.is_file():
+                errors.append(f'broken or escaping local link: {rel}: {target}')
+
+    task = visible_markdown(text.get('TASK_UNDER_TEST.md', ''))
+    if len(re.findall(r'^Change ID: CR-[A-Z0-9-]+\s*$', task, re.M)) != 1:
+        errors.append('task must have one explicit Change ID')
+    for prefix, source in (('FR', 'REQUIREMENTS.md'), ('AC', 'SPEC.md')):
+        known = set(re.findall(r'\b' + prefix + r'-\d{2}\b', text.get(source, '')))
+        references = set(re.findall(r'\b' + prefix + r'-\d{2}\b', task))
+        if not references or not references <= known:
+            errors.append(f'task has missing or unresolved {prefix} references')
+
+    try:
+        manifest = json.loads(text.get('docs/protected-paths.json', '{}'))
+        expected = protected_paths(root)
+        entries = manifest.get('files', {})
+        if manifest.get('schema_version') != 1 or set(entries) != expected:
+            errors.append('protected manifest must cover exactly all declared protected paths')
+        for rel, digest in sorted(entries.items()):
+            path = root / rel
+            ancestors = [root.joinpath(*Path(rel).parts[:i]) for i in range(1, len(Path(rel).parts) + 1)]
+            if Path(rel).is_absolute() or '..' in Path(rel).parts or any(p.is_symlink() for p in ancestors):
+                errors.append(f'unsafe protected path: {rel}')
+            elif not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+                errors.append(f'protected file changed or missing: {rel}')
+    except (OSError, ValueError, TypeError, AttributeError):
+        errors.append('invalid protected manifest')
+
+    for rel in ('.env', 'id_rsa', 'id_ed25519', 'credentials.json'):
+        if os.path.lexists(root / rel):
+            errors.append(f'forbidden sensitive root path: {rel}')
+    for path in (root / 'src').rglob('*'):
+        if path.is_symlink():
+            errors.append(f'symlink in source: {path.relative_to(root)}')
+
+    try:
+        config = tomllib.loads(text.get('pyproject.toml', ''))
+        if config.get('project', {}).get('dependencies') != []:
+            errors.append('runtime dependencies must remain empty')
+        if config.get('tool', {}).get('pytest', {}).get('ini_options', {}).get('testpaths') != ['tests']:
+            errors.append('pytest must target active tests only')
+    except (ValueError, TypeError):
+        errors.append('invalid pyproject.toml')
+
+    for module, allowed in ALLOWED_LOCAL.items():
+        path = root / 'src/customer_search' / f'{module}.py'
+        try:
+            tree = ast.parse(path.read_text(encoding='utf-8'))
+            for node in ast.walk(tree):
+                names = []
+                if isinstance(node, ast.Import):
+                    names = [alias.name for alias in node.names]
+                elif isinstance(node, ast.ImportFrom):
+                    if node.level:
+                        if node.level != 1 or not node.module or node.module.split('.')[0] not in allowed:
+                            errors.append(f'architecture dependency violation: {module}: relative import')
+                    elif node.module:
+                        names = [node.module]
+                for name in names:
+                    base = name.split('.')[0]
+                    if base == 'customer_search':
+                        local = name.split('.')[1] if '.' in name else None
+                        if local not in allowed:
+                            errors.append(f'architecture dependency violation: {module}: {name}')
+                    elif base not in sys.stdlib_module_names:
+                        errors.append(f'nonstandard runtime import: {module}: {name}')
+                if module in {'models', 'search'}:
+                    if names and any(n.split('.')[0] in {'os', 'sys', 'pathlib', 'subprocess', 'socket', 'urllib', 'http', 'io'} for n in names):
+                        errors.append(f'domain I/O dependency violation: {module}')
+                    if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id in {'print', 'open', 'input', 'exec', 'eval', '__import__'}:
+                        errors.append(f'domain side-effect call: {module}: {node.func.id}')
+        except (OSError, SyntaxError, UnicodeError):
+            errors.append(f'unreadable or invalid runtime module: {module}')
+
+    try:
+        workflow = yaml.load(text.get('.github/workflows/verify.yml', ''), Loader=yaml.BaseLoader)
+        if workflow['permissions'] != {'contents': 'read'}:
+            errors.append('CI permissions must be contents: read only')
+        if not {'push', 'pull_request'} <= set(workflow['on']):
+            errors.append('CI must independently run on push and pull_request')
+        steps = workflow['jobs']['verify']['steps']
+        if not any(s.get('run') == './scripts/verify_repo.sh' for s in steps):
+            errors.append('CI must invoke the single shared verification script')
+        if any(re.search(r'\bpytest\b|\bruff check\b|check_repo_contract\.py', s.get('run', '')) for s in steps):
+            errors.append('CI must not duplicate gate stage logic')
+    except (KeyError, TypeError, AttributeError, yaml.YAMLError):
+        errors.append('invalid CI workflow structure')
+
+    verify = text.get('scripts/verify_repo.sh', '')
+    for required in ('set -euo pipefail', '-m pytest', '-m ruff check', 'scripts/check_repo_contract.py'):
+        if required not in verify:
+            errors.append(f'verification script missing stage/safety marker: {required}')
+    script = root / 'scripts/verify_repo.sh'
+    if script.is_file() and not script.stat().st_mode & stat.S_IXUSR:
+        errors.append('verification script must be executable')
+    return sorted(set(errors))
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--root', type=Path, default=ROOT)
+    args = parser.parse_args(argv)
+    errors = check(args.root.resolve())
+    if errors:
+        for error in errors:
+            print(f'CONTRACT: FAIL: {error}', file=sys.stderr)
+        return 1
+    print('CONTRACT: PASS (files, headings, references, protected hashes, boundaries, CI)')
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
+

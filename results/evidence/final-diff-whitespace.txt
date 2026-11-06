@@ -1,0 +1,2 @@
+results/after-agent-run.md:79: new blank line at EOF.
+results/before-agent-run.md:79: new blank line at EOF.

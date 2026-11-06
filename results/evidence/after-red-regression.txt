@@ -1,0 +1,76 @@
+FFFFFF....                                                               [100%]
+=================================== FAILURES ===================================
+______________________ test_customer_rejects_invalid_id[] ______________________
+
+identifier = ''
+
+    @pytest.mark.parametrize("identifier", ["", None, 0, False, [], b"C1"])
+    def test_customer_rejects_invalid_id(identifier):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_model_validation.py:12: Failed
+____________________ test_customer_rejects_invalid_id[None] ____________________
+
+identifier = None
+
+    @pytest.mark.parametrize("identifier", ["", None, 0, False, [], b"C1"])
+    def test_customer_rejects_invalid_id(identifier):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_model_validation.py:12: Failed
+_____________________ test_customer_rejects_invalid_id[0] ______________________
+
+identifier = 0
+
+    @pytest.mark.parametrize("identifier", ["", None, 0, False, [], b"C1"])
+    def test_customer_rejects_invalid_id(identifier):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_model_validation.py:12: Failed
+___________________ test_customer_rejects_invalid_id[False] ____________________
+
+identifier = False
+
+    @pytest.mark.parametrize("identifier", ["", None, 0, False, [], b"C1"])
+    def test_customer_rejects_invalid_id(identifier):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_model_validation.py:12: Failed
+________________ test_customer_rejects_invalid_id[identifier4] _________________
+
+identifier = []
+
+    @pytest.mark.parametrize("identifier", ["", None, 0, False, [], b"C1"])
+    def test_customer_rejects_invalid_id(identifier):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_model_validation.py:12: Failed
+_____________________ test_customer_rejects_invalid_id[C1] _____________________
+
+identifier = b'C1'
+
+    @pytest.mark.parametrize("identifier", ["", None, 0, False, [], b"C1"])
+    def test_customer_rejects_invalid_id(identifier):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_model_validation.py:12: Failed
+=========================== short test summary info ============================
+FAILED tests/test_model_validation.py::test_customer_rejects_invalid_id[] - F...
+FAILED tests/test_model_validation.py::test_customer_rejects_invalid_id[None]
+FAILED tests/test_model_validation.py::test_customer_rejects_invalid_id[0] - ...
+FAILED tests/test_model_validation.py::test_customer_rejects_invalid_id[False]
+FAILED tests/test_model_validation.py::test_customer_rejects_invalid_id[identifier4]
+FAILED tests/test_model_validation.py::test_customer_rejects_invalid_id[C1]
+6 failed, 4 passed in 0.02s

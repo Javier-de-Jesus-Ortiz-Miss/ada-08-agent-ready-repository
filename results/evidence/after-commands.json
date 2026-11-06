@@ -1,0 +1,122 @@
+[
+  {
+    "name": "exploration",
+    "started_at_utc": "2026-11-06T00:04:59.964498+00:00",
+    "finished_at_utc": "2026-11-06T00:04:59.983552+00:00",
+    "cwd": "work/after",
+    "argv": [
+      "rg",
+      "--files",
+      "-g",
+      "!results/prior/**",
+      "-g",
+      "!skills/**"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/after-exploration.txt"
+  },
+  {
+    "name": "context",
+    "started_at_utc": "2026-11-06T00:04:59.983891+00:00",
+    "finished_at_utc": "2026-11-06T00:05:00.012326+00:00",
+    "cwd": "work/after",
+    "argv": [
+      "/workspace/ada08/.venv/bin/python",
+      "-c",
+      "from pathlib import Path; files=['AGENTS.md', 'README.md', 'REQUIREMENTS.md', 'SPEC.md', 'ARCHITECTURE.md', 'TASKS.md', 'TASK_UNDER_TEST.md', 'pyproject.toml', 'src/customer_search/models.py', 'tests/test_search.py', 'tests/test_cli.py', 'docs/REPO_MAP.md', 'scripts/verify_repo.sh', 'scripts/check_repo_contract.py']; [print(\"FILE:\",f,\"\\n\",Path(f).read_text()) for f in files]"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/after-context.txt"
+  },
+  {
+    "name": "baseline-tests",
+    "started_at_utc": "2026-11-06T00:05:00.012671+00:00",
+    "finished_at_utc": "2026-11-06T00:05:01.133292+00:00",
+    "cwd": "work/after",
+    "argv": [
+      "/workspace/ada08/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/after-baseline-tests.txt"
+  },
+  {
+    "name": "red-regression",
+    "started_at_utc": "2026-11-06T00:05:01.133692+00:00",
+    "finished_at_utc": "2026-11-06T00:05:01.297278+00:00",
+    "cwd": "work/after",
+    "argv": [
+      "/workspace/ada08/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_model_validation.py"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "log": "results/evidence/after-red-regression.txt"
+  },
+  {
+    "name": "green-tests",
+    "started_at_utc": "2026-11-06T00:05:01.297933+00:00",
+    "finished_at_utc": "2026-11-06T00:05:02.241583+00:00",
+    "cwd": "work/after",
+    "argv": [
+      "/workspace/ada08/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/after-green-tests.txt"
+  },
+  {
+    "name": "verify",
+    "started_at_utc": "2026-11-06T00:05:02.241831+00:00",
+    "finished_at_utc": "2026-11-06T00:05:03.570686+00:00",
+    "cwd": "work/after",
+    "argv": [
+      "bash",
+      "scripts/verify_repo.sh"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/after-verify.txt"
+  },
+  {
+    "name": "cli",
+    "started_at_utc": "2026-11-06T00:05:03.571000+00:00",
+    "finished_at_utc": "2026-11-06T00:05:03.609863+00:00",
+    "cwd": "work/after",
+    "argv": [
+      "bash",
+      "-c",
+      "PYTHONPATH=src exec \"$1\" -m customer_search ana",
+      "bash",
+      "/workspace/ada08/.venv/bin/python"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/after-cli.txt"
+  },
+  {
+    "name": "scope",
+    "started_at_utc": "2026-11-06T00:05:03.624976+00:00",
+    "finished_at_utc": "2026-11-06T00:05:03.633095+00:00",
+    "cwd": "work/after",
+    "argv": [
+      "git",
+      "status",
+      "--short"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/after-scope.txt"
+  }
+]
