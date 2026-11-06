@@ -2,54 +2,31 @@
 
 ## Overview
 
-CLI local en Python. La entrada se valida y pasa a una función pura de búsqueda sobre registros en memoria.
-
-```mermaid
-flowchart LR
-  Usuario --> CLI
-  CLI --> Busqueda
-  Datos --> Busqueda
-  Busqueda --> CLI
-  CLI --> Salida
-```
+I use a local Python CLI over in-memory records. I keep argument handling, domain validation, matching and demo data separate.
 
 ## Components
 
-- `src/customer_search/models.py`: modelo inmutable `Customer`.
-- `src/customer_search/data.py`: datos ficticios de demostración.
-- `src/customer_search/search.py`: validación y búsqueda.
-- `src/customer_search/cli.py`: argumentos, salida y errores de usuario.
-- `tests/`: pruebas unitarias y de CLI.
+| Path | Responsibility I assign | Dependencies I allow |
+|---|---|---|
+| `src/customer_search/models.py` | I enforce the immutable record and identifier invariant. | I allow the standard library only. |
+| `src/customer_search/data.py` | I hold four fictional, read-only records. | I allow models only. |
+| `src/customer_search/search.py` | I validate queries and return matches without I/O. | I allow models and the standard library. |
+| `src/customer_search/cli.py` | I parse arguments, translate errors and format output. | I allow data and search. |
+| `src/customer_search/__main__.py` | I start the CLI. | I allow cli. |
+| `src/customer_search/__init__.py` | I expose Customer and search_customers. | I allow models and search. |
 
-## Responsibilities
+## Data Flow and Interfaces
 
-El módulo de búsqueda no imprime ni lee argumentos. La CLI no implementa reglas de coincidencia. Los datos de ejemplo se mantienen separados de ambos.
+I pass the CLI term to `search_customers(term: str, customers: Iterable[Customer]) -> list[Customer]`. I construct `Customer` before search and reject an invalid identifier in its `__post_init__` method. I return a new result list in source order, then format it in the CLI.
 
-## Data Flow
+## Boundaries
 
-La CLI recibe el término, llama a `search_customers(term, customers)`, formatea los resultados y devuelve un código de salida. La función devuelve una lista nueva en el orden original.
+I do not import CLI or data modules into matching or model code. I do not add printing, process execution, filesystem or network operations to the domain. I check import boundaries and direct print/open calls in `scripts/check_repo_contract.py`; I treat that AST gate as detection of declared direct imports, not a sandbox against arbitrary dynamic Python. I keep runtime dependencies empty.
 
-## Interfaces
+## Verification and Decisions
 
-- Python: `search_customers(term: str, customers: Iterable[Customer]) -> list[Customer]`.
-- Terminal: `python -m customer_search <término>` con `PYTHONPATH=src` o instalación editable.
+I verify domain and CLI behavior with pytest. I use Ruff for lint and my contract checker for file presence, references, protected hashes, CI wiring and direct dependencies. I keep the linear search because the dataset is small and the feature excludes ranking/indexing. I use `casefold()` for case independence, frozen dataclasses for immutability and injected iterables for testability.
 
-## Error Handling
+## Operational Boundaries
 
-`search_customers` emite `ValueError` si el término es inválido. La CLI lo traduce a mensaje en `stderr` y código 2. La ausencia de coincidencias es una respuesta válida.
-
-## Testing Strategy
-
-`pytest` verifica búsqueda por ambos campos, fragmentos, normalización, orden, no duplicación, salida de la CLI y códigos de salida.
-
-## Dependencies
-
-Python 3.11+ y biblioteca estándar para ejecución; `pytest` para pruebas. No hay red, base de datos ni API de pago.
-
-## Design Decisions
-
-Se usa memoria para mantener la feature pequeña. `casefold()` hace la comparación insensible a mayúsculas. La lista de clientes se inyecta en la función para probar sin depender de los datos de demostración.
-
-## Trade-offs
-
-El recorrido lineal es sencillo y suficiente para el conjunto local; no ofrece indexación ni persistencia. La coincidencia es textual y no implementa búsqueda aproximada ni normalización de acentos.
+I keep baseline and historical evidence immutable under `docs/protected-paths.json`. I exclude the local `.venv/`, `work/` trees and delivery `outputs/` from source history. I reserve destructive operations, product requirement changes and external writes for explicit human decisions under `AGENTS.md`.

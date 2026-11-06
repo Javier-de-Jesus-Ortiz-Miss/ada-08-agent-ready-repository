@@ -1,55 +1,23 @@
-# AI Usage Log — ADA-05
+# Mi bitácora profesional de uso de IA - ADA-08
 
-Yo utilicé asistencia de IA durante el análisis, la documentación, la implementación y la validación. Yo organicé el registro por etapas técnicas del proyecto.
+Yo utilicé asistencia de IA para analizar el repositorio, diseñar contratos y automatizar verificaciones. Yo registré decisiones técnicas y evidencia verificable en las siguientes cinco etapas.
 
-## Entrada 01 — Análisis del ADA
+## 1. Auditoría inicial
 
-- **Objetivo técnico:** Analizar el enunciado e identificar los entregables antes de crear archivos.
-- **Apoyo de la IA:** Leyó el enunciado, resumió las fases y revisó el estado de la carpeta del proyecto.
-- **Mi participación:** Yo organicé el alcance y la secuencia de trabajo a partir del enunciado.
-- **Resultado:** Se identificaron la búsqueda de clientes, los documentos requeridos, las pruebas y el registro de uso de IA. En este paso no se modificaron archivos.
+Yo analicé el proyecto heredado de ADA-05 y los artefactos de ADA-07. Yo identifiqué la ausencia de un mapa por tarea, un comando único de validación, lint, CI y protección de evidencia. Yo conservé el baseline antes de implementar el cambio y evalué las ocho dimensiones con los pesos de la rúbrica. Yo registré 61/100 y preservé la suite de 25 pruebas.
 
-## Entrada 02 — Requisitos (fase 1)
+## 2. Diseño de AGENTS.md
 
-- **Objetivo técnico:** Preparar una propuesta de requisitos para la búsqueda de clientes.
-- **Propuesta de la IA:** Redactar la historia de usuario, seis requisitos funcionales, tres no funcionales, restricciones, supuestos y dos preguntas abiertas. Se propuso una CLI local con datos en memoria como alcance inicial.
-- **Mi revisión y decisión:** Leí y revisé la lista propuesta de requisitos funcionales y no funcionales. Aprobé su contenido y el alcance de CLI local con datos ficticios en memoria. 
-- **Cambio en el producto:** Se creó `REQUIREMENTS.md`; Q-01, Q-02 y A-01 quedaron definidos para esta entrega.
-- **Resultado:** El alcance quedó limitado a búsqueda local, sin administración de clientes ni persistencia.
+Yo organicé fuentes de verdad, rutas, comandos estándar, reglas de cambio, stop conditions y Definition of Done. Yo mantuve los requisitos en REQUIREMENTS.md y los criterios de aceptación en SPEC.md. Yo utilicé REPO_MAP para conectar la tarea con código y pruebas y evité duplicar requisitos en adaptadores de herramientas.
 
-## Entrada 03 — Especificación y planificación (fases 2 a 6)
+## 3. Guardrail y automatización
 
-- **Objetivo técnico:** Desarrollar la especificación, la arquitectura, las tareas y las instrucciones del agente a partir de los requisitos.
-- **Etapa técnica:** La IA convirtió los requisitos ya definidos en criterios de aceptación, reglas de búsqueda, arquitectura y seis tareas verificables.
-- **Propuesta de la IA:** Usar una función pura con clientes inyectados, `casefold()` para comparar y una CLI que traduzca los errores a códigos de salida.
-- **Mi revisión y decisión:** Leí y aprobé los documentos de especificación, arquitectura y planificación. Acepté las propuestas técnicas de la IA para este alcance.
-- **Cambio en el producto:** Se añadieron `SPEC.md`, `ARCHITECTURE.md`, `TASKS.md`, `AGENTS.md`, `README.md` y la estructura inicial, antes de implementar la feature.
-- **Resultado:** Los requisitos conservaron sus IDs y la especificación los relacionó con criterios de aceptación.
+Yo convertí reglas verificables en scripts: pytest, Ruff, integridad de archivos protegidos, referencias de requisitos, dependencias y permisos de CI. Yo fijé las versiones de las herramientas y comprobé los guardrails mediante mutaciones de copias temporales. Yo mantuve explícito el alcance del análisis estático y de la detección de archivos sensibles.
 
-## Entrada 04 — Implementación (T-01 a T-04)
+## 4. Ejecución AFTER
 
-- **Etapa técnica:** Se pidió a Antigravity CLI (`agy`) realizar T-01 después del commit base. Los primeros intentos fallaron por permisos y el intento en sandbox agotó el tiempo de espera. Un borrador tardío de `README.md` apareció en el árbol, sin reporte completo. Codex continuó T-01 y realizó T-02 a T-04.
-- **Propuesta de la IA:** Paquete Python instalable, datos ficticios, modelo inmutable, búsqueda pura y CLI con `argparse`.
-- **Mi revisión y decisión:** Leí y aprobé la implementación presentada. El código fue escrito por Codex, que continuó el trabajo después de los problemas de ejecución de `agy`.
-- **Cambio en el producto:** Se añadieron `pyproject.toml` y `src/customer_search/`; se corrigió el README para que sus comandos coincidan con el paquete final.
-- **Resultado:** La función de búsqueda quedó separada de la lectura de argumentos y de la presentación de resultados.
+Yo partí del mismo código funcional y utilicé árboles de trabajo separados. Yo implementé CR-ADA08-01 desde el modelo original y conservé los comandos, sus códigos de salida y los parches. Yo observé seis fallos esperados antes del arreglo y la suite verde después. Yo conservé un estado de agente compartido entre condiciones; por eso yo mantuve la validez experimental como PARTIAL.
 
-## Entrada 05 — Pruebas y revisión (T-05 y T-06)
+## 5. Evaluación final y reflexión
 
-- **Etapa técnica:** Codex comparó las reglas de `SPEC.md` con la implementación y preparó pruebas para búsqueda, validación y CLI.
-- **Propuesta de la IA:** Pruebas de fragmentos, mayúsculas, orden, ausencia de duplicados, mensajes y códigos de salida; tabla de trazabilidad por requisito.
-- **Mi revisión y decisión:** Leí y aprobé las pruebas, los resultados presentados y la documentación de trazabilidad. Codex diseñó y ejecutó las verificaciones registradas.
-- **Cambio en el producto:** Se añadieron `tests/`, `docs/traceability.md`, `results/agent-report.md`, `docs/reflection.md` y documentación final. `pytest -v` aprobó 15 pruebas en la primera ejecución completa.
-- **Resultado:** Las pruebas cubren búsqueda, validación y salida de la CLI; la trazabilidad conecta esas verificaciones con los requisitos.
-
-## Entrada 06 — Documentación técnica
-
-- **Objetivo técnico:** Preparar una explicación de la colaboración y de la revisión por fases.
-- **Mi participación:** Aporté ideas y ajustes sobre cómo describir el trabajo y mi participación. Pedí apoyo para expresarlos con mayor claridad y revisé la versión resultante.
-- **Aporte de la IA:** Codex resumió las interacciones y actualizó la documentación para distinguir mi revisión y aprobación de las propuestas y la implementación realizadas con IA.
-- **Cambio en el producto:** Se ajustaron los textos de requisitos, reflexión, README, informe y este registro.
-- **Resultado:** La documentación conserva las herramientas utilizadas, los cambios observados y los resultados de las pruebas.
-
-## Alcance de las verificaciones
-
-Codex ejecutó las pruebas y las verificaciones técnicas. Mi lectura y aprobación del trabajo quedaron confirmadas al cierre y están organizadas por fase en `results/agent-report.md`.
+Yo calculé 91/100 AFTER y una mejora de 30 puntos. Yo distinguí las 35 pruebas de producto de las quince pruebas del contrato. Yo conservé el mapa, la trazabilidad y el gate compartido como base de trabajo. Yo mantuve pendiente la réplica con estados de agente independientes y reservé los cambios semánticos de requisitos y arquitectura para revisión humana.

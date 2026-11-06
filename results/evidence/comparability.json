@@ -1,0 +1,11 @@
+{
+  "task_sha256": "d095ca263f18b61388db85f6177e80f6a1b25696b16ab46e3242240c1cb9fe96",
+  "official_input_sha256": "ef56c00f9d0102af35bcf0852d0505cd2790ed3477b1eaf2dade5c2135aada4f",
+  "initial_before_after_functional_files_equal": true,
+  "after_untouched_after_before_implementation": true,
+  "root_functional_files_unchanged_before_readiness_commit": true,
+  "baseline_file_count": 8,
+  "independent_clean_sessions": false,
+  "strict_protocol_result": "PARTIAL",
+  "baseline_ref": "ada08-baseline"
+}

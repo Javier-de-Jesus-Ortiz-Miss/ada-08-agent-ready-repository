@@ -1,0 +1,62 @@
+[
+  {
+    "name": "editable-install",
+    "started_at_utc": "2026-11-06T00:03:57.243205+00:00",
+    "finished_at_utc": "2026-11-06T00:03:58.086757+00:00",
+    "cwd": ".",
+    "argv": [
+      "/workspace/ada08/.venv/bin/python",
+      "-m",
+      "pip",
+      "install",
+      "--no-deps",
+      "--no-build-isolation",
+      "-e",
+      "."
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/preafter-editable-install.txt"
+  },
+  {
+    "name": "environment",
+    "started_at_utc": "2026-11-06T00:03:58.087090+00:00",
+    "finished_at_utc": "2026-11-06T00:03:58.614744+00:00",
+    "cwd": ".",
+    "argv": [
+      "/workspace/ada08/.venv/bin/python",
+      "-c",
+      "import platform, pytest, ruff, yaml; import importlib.metadata as m; print(platform.platform()); print(platform.python_version()); [print(p,m.version(p)) for p in [\"pytest\",\"ruff\",\"PyYAML\",\"setuptools\",\"wheel\"]]"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/preafter-environment.txt"
+  },
+  {
+    "name": "bash-syntax",
+    "started_at_utc": "2026-11-06T00:03:58.615231+00:00",
+    "finished_at_utc": "2026-11-06T00:03:58.619058+00:00",
+    "cwd": ".",
+    "argv": [
+      "bash",
+      "-n",
+      "scripts/verify_repo.sh"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/preafter-bash-syntax.txt"
+  },
+  {
+    "name": "readiness-gate",
+    "started_at_utc": "2026-11-06T00:03:58.619315+00:00",
+    "finished_at_utc": "2026-11-06T00:03:59.912094+00:00",
+    "cwd": ".",
+    "argv": [
+      "bash",
+      "scripts/verify_repo.sh"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "log": "results/evidence/preafter-readiness-gate.txt"
+  }
+]

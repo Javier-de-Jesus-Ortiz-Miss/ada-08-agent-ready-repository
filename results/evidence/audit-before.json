@@ -1,0 +1,54 @@
+{
+  "scale": "0 absent; 1 partial; 2 prior knowledge needed; 3 human usable; 4 agent usable; 5 automated evidence",
+  "dimensions": [
+    {
+      "name": "Entry Point & Navigation",
+      "weight": 15,
+      "before": 3,
+      "gap": "README links exist; no task-oriented map or protected-path guide."
+    },
+    {
+      "name": "Agent Instructions",
+      "weight": 15,
+      "before": 3,
+      "gap": "Existing AGENTS has SoT and tests; lacks run/install/lint commands and complete stop conditions."
+    },
+    {
+      "name": "Build / Run / Test",
+      "weight": 15,
+      "before": 3,
+      "gap": "Editable install and pytest are documented; tools unpinned and no lint or single gate."
+    },
+    {
+      "name": "Architecture Boundaries",
+      "weight": 10,
+      "before": 4,
+      "gap": "Responsibilities already explicit; no automated dependency boundary check."
+    },
+    {
+      "name": "Requirements & Traceability",
+      "weight": 10,
+      "before": 4,
+      "gap": "FR/AC/tasks matrix already strong; new model rule not yet traced to executable tests."
+    },
+    {
+      "name": "Automation & Guardrails",
+      "weight": 10,
+      "before": 1,
+      "gap": "pytest configuration only; no repository integrity check or CI."
+    },
+    {
+      "name": "Testability & Evidence",
+      "weight": 15,
+      "before": 4,
+      "gap": "Existing search/CLI tests; no constructor invariant regression or unified evidence gate."
+    },
+    {
+      "name": "Safety & Permissions",
+      "weight": 10,
+      "before": 2,
+      "gap": "Small scoped changes requested; protected artifacts and external-write rules not explicit."
+    }
+  ],
+  "before_total": 61.0
+}

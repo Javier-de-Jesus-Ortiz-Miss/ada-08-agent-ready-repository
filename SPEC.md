@@ -1,86 +1,48 @@
-# Customer Search Feature
+# Customer Search Specification
 
-## Goal
+## Goal and Requirements Covered
 
-Permitir localizar registros existentes de clientes mediante una CLI local con un solo término.
-
-## Requirements Covered
-
-- FR-01
-- FR-02
-- FR-03
-- FR-04
-- FR-05
-- FR-06
-- NFR-01
-- NFR-02
-- NFR-03
+I locate existing customer records from a local CLI with one term. I cover FR-01 through FR-06 and NFR-01 through NFR-03 from `REQUIREMENTS.md`.
 
 ## Scope
 
-Una ejecución recibe un término de búsqueda, consulta una lista fija de clientes ficticios en memoria y presenta las coincidencias.
-
-## Out of Scope
-
-Alta, edición o eliminación de clientes; persistencia; API HTTP; paginación; clasificación por relevancia; búsqueda por otros campos.
+I query a fixed in-memory collection of fictional customers. I exclude creation, updates, deletion, persistence, HTTP endpoints, pagination, ranking and searches of other fields.
 
 ## Domain Model
 
-`Customer` tiene `id` (texto no vacío), `name` (texto) y `email` (texto). El conjunto de demostración contiene registros ficticios. Los datos se tratan como solo lectura.
+I represent a customer with `Customer(id, name, email)`. I require `id` to be non-empty text; I preserve valid text verbatim, including whitespace, without trimming or new format rules. I reject a non-string or empty-string identifier at construction with `ValueError`. I leave name and email validation unchanged. I preserve frozen instances and read-only demo data.
+
+I clarified the existing non-empty textual ID rule for CR-ADA08-01 before the baseline tag and either controlled run; I did not add it after seeing a failing implementation. I keep the archived original specification unchanged.
 
 ## Search Rules
 
-- Se eliminan los espacios al inicio y final del término.
-- Se compara el término normalizado con `name` y `email` usando `str.casefold()`.
-- Una coincidencia es una subcadena en cualquiera de esos dos campos.
-- Cada cliente aparece a lo sumo una vez aunque coincida en ambos campos.
-- Se conserva el orden de entrada de los clientes.
-- Los espacios interiores del término se conservan.
+I strip outer query whitespace, apply `str.casefold()` to the query and both searchable fields, and use substring membership in either name or email. I return each matching input record once even when both fields match. I preserve input order and interior query spaces. I accept any `Iterable[Customer]` and return a new list. I do not add accent normalization or fuzzy matching.
 
 ## Validation Rules
 
-- El término debe ser una cadena de texto.
-- Tras eliminar espacios exteriores, debe contener al menos un carácter.
-- La CLI exige exactamente un argumento de búsqueda. La ausencia o exceso de argumentos produce un mensaje de uso.
+I require a textual query with at least one character after outer trimming. I require exactly one positional CLI argument. I distinguish query normalization from identifier preservation.
 
 ## Error Handling
 
-- Un término inválido en la función de búsqueda produce `ValueError` con un mensaje legible.
-- En la CLI, un término vacío o de solo espacios produce un mensaje de error en `stderr` y código de salida 2.
-- La ausencia o exceso de argumentos la gestiona `argparse`, con código 2.
-- Una búsqueda válida sin coincidencias produce el mensaje `No se encontraron clientes.` y código 0.
+I raise `ValueError` for invalid query input and invalid customer identifiers. I translate query errors to a useful Spanish message on stderr and CLI exit 2. I let argparse report missing or excess arguments with exit 2. I print `No se encontraron clientes.` with exit 0 for valid queries without matches. I print identifier, name and email for matches and return exit 0.
 
 ## Acceptance Criteria
 
-- **AC-01 (FR-01):** Un único término encuentra clientes cuyo nombre o correo contiene ese término.
-- **AC-02 (FR-02):** Un fragmento que no sea el valor completo encuentra el cliente correspondiente.
-- **AC-03 (FR-03):** Cambiar mayúsculas y minúsculas del término no cambia las coincidencias.
-- **AC-04 (FR-04):** La salida muestra identificador, nombre y correo de cada coincidencia.
-- **AC-05 (FR-05):** Sin coincidencias, la CLI muestra el mensaje definido y termina con código 0.
-- **AC-06 (FR-06):** Un término vacío o de solo espacios se rechaza con un mensaje útil; la CLI termina con código 2.
-- **AC-07 (NFR-01):** `pytest -v` ejecuta pruebas automatizadas para AC-01 a AC-06 y las reglas de orden y no duplicación.
-- **AC-08 (NFR-02):** Una búsqueda funciona sin red ni credenciales y solo usa la biblioteca estándar de Python en tiempo de ejecución.
-- **AC-09 (NFR-03):** `README.md` indica requisitos de Python, instalación, ejecución y pruebas.
+- **AC-01 (FR-01):** I find customers by a term in either name or email.
+- **AC-02 (FR-02):** I find a customer with a partial field fragment.
+- **AC-03 (FR-03):** I retain matches when query casing changes, including Unicode casefold cases.
+- **AC-04 (FR-04):** I show identifier, name and email in each CLI result.
+- **AC-05 (FR-05):** I show the specified no-match message and exit 0.
+- **AC-06 (FR-06):** I reject blank queries with a useful error and CLI exit 2.
+- **AC-07 (NFR-01):** I execute automated acceptance tests with pytest, including input order and no duplicated output from matching both fields.
+- **AC-08 (NFR-02):** I search without network, credentials or nonstandard runtime packages.
+- **AC-09 (NFR-03):** I document Python, installation, run and test commands in README.
+- **AC-10 (FR-04):** I reject non-text or empty identifiers at construction, preserve every non-empty textual identifier and keep customers immutable.
 
 ## Test Scenarios
 
-- Buscar un fragmento de nombre, un fragmento de correo y un término presente en ambos campos.
-- Repetir una búsqueda con variantes de mayúsculas.
-- Verificar orden y ausencia de duplicados.
-- Buscar un término inexistente.
-- Probar `""`, `"   "`, una entrada no textual en la función y argumentos faltantes o extra en la CLI.
-- Verificar los campos impresos y los códigos de salida.
+I exercise name/email fragments, both-field matching, casing, Unicode sharp-s, order, generators, interior/outer spaces, absent records, blank and non-text queries, missing/extra CLI arguments, output fields and exit codes. I exercise invalid IDs, valid ID preservation and frozen-instance behavior for CR-ADA08-01.
 
-## Constraints
+## Constraints and Open Questions
 
-Se aplican C-01 a C-03 y A-01 a A-02 de `REQUIREMENTS.md`. No se necesita conexión ni API de pago.
-
-## Open Questions
-
-N/A: Q-01 y Q-02 quedaron resueltas en `REQUIREMENTS.md` para esta entrega.
-
-## CR-ADA08-01 — Existing Domain Invariant Clarification
-
-I make the existing Domain Model rule for a non-empty textual customer ID executable: constructing `Customer` with a non-string ID or the empty string raises `ValueError`. I preserve every non-empty string verbatim, including whitespace; I add no trimming or format restriction. I keep valid construction, frozen records, search and CLI behavior compatible.
-
-- **AC-10 (FR-04):** I verify rejection of non-text and empty identifiers at construction, preservation of valid identifiers and continued immutability. I do not require new validation of name or email.
+I apply the constraints in `REQUIREMENTS.md`. I retain the resolved Q-01/Q-02 decisions there and introduce no unresolved product question in this task.

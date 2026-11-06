@@ -1,0 +1,88 @@
+{
+  "scale": "0 absent; 1 partial; 2 prior knowledge needed; 3 human usable; 4 agent usable; 5 automated evidence",
+  "dimensions": [
+    {
+      "name": "Entry Point & Navigation",
+      "weight": 15,
+      "before": 3,
+      "gap": "README links exist; no task-oriented map or protected-path guide.",
+      "after": 5,
+      "after_evidence": "Yo validé REPO_MAP, enlaces y rutas de entrada con el checker.",
+      "before_weighted": 9.0,
+      "after_weighted": 15.0
+    },
+    {
+      "name": "Agent Instructions",
+      "weight": 15,
+      "before": 3,
+      "gap": "Existing AGENTS has SoT and tests; lacks run/install/lint commands and complete stop conditions.",
+      "after": 4,
+      "after_evidence": "Yo añadí comandos, fuentes, límites, stop conditions y DoD; yo mantuve decisiones humanas explícitas.",
+      "before_weighted": 9.0,
+      "after_weighted": 12.0
+    },
+    {
+      "name": "Build / Run / Test",
+      "weight": 15,
+      "before": 3,
+      "gap": "Editable install and pytest are documented; tools unpinned and no lint or single gate.",
+      "after": 5,
+      "after_evidence": "Yo fijé herramientas y usé un solo gate; yo comprobé instalación, tests, lint y contrato.",
+      "before_weighted": 9.0,
+      "after_weighted": 15.0
+    },
+    {
+      "name": "Architecture Boundaries",
+      "weight": 10,
+      "before": 4,
+      "gap": "Responsibilities already explicit; no automated dependency boundary check.",
+      "after": 5,
+      "after_evidence": "Yo conservé las responsabilidades y probé imports prohibidos y llamadas directas de I/O.",
+      "before_weighted": 8.0,
+      "after_weighted": 10.0
+    },
+    {
+      "name": "Requirements & Traceability",
+      "weight": 10,
+      "before": 4,
+      "gap": "FR/AC/tasks matrix already strong; new model rule not yet traced to executable tests.",
+      "after": 4,
+      "after_evidence": "Yo mantuve FR/AC/T y añadí la ruta al test del invariante; yo conservé revisión semántica humana.",
+      "before_weighted": 8.0,
+      "after_weighted": 8.0
+    },
+    {
+      "name": "Automation & Guardrails",
+      "weight": 10,
+      "before": 1,
+      "gap": "pytest configuration only; no repository integrity check or CI.",
+      "after": 4,
+      "after_evidence": "Yo ejecuté guardrails con mutaciones y configuré CI; yo no observé CI remota.",
+      "before_weighted": 2.0,
+      "after_weighted": 8.0
+    },
+    {
+      "name": "Testability & Evidence",
+      "weight": 15,
+      "before": 4,
+      "gap": "Existing search/CLI tests; no constructor invariant regression or unified evidence gate.",
+      "after": 5,
+      "after_evidence": "Yo conservé regresiones rojas/verdes, hashes, patches y pruebas negativas.",
+      "before_weighted": 12.0,
+      "after_weighted": 15.0
+    },
+    {
+      "name": "Safety & Permissions",
+      "weight": 10,
+      "before": 2,
+      "gap": "Small scoped changes requested; protected artifacts and external-write rules not explicit.",
+      "after": 4,
+      "after_evidence": "Yo protegí archivos y permisos CI; yo mantuve límites del scanner y aprobación de acciones externas.",
+      "before_weighted": 4.0,
+      "after_weighted": 8.0
+    }
+  ],
+  "before_total": 61.0,
+  "after_total": 91.0,
+  "delta": 30.0
+}
